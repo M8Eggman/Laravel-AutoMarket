@@ -2,13 +2,14 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
-import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { LuCar } from "react-icons/lu";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: "",
+        first_name: "",
+        last_name: "",
+        phone: "",
         email: "",
         password: "",
         password_confirmation: "",
@@ -36,24 +37,67 @@ export default function Register() {
                 </Link>
             </div>
             <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-                <Head title="Register" />
+                <Head title="Inscription" />
 
                 <form onSubmit={submit}>
                     <div>
-                        <InputLabel htmlFor="name" value="Name" />
+                        <InputLabel htmlFor="first_name" value="Prénom" />
 
                         <TextInput
-                            id="name"
-                            name="name"
-                            value={data.name}
+                            id="first_name"
+                            name="first_name"
+                            value={data.first_name}
                             className="mt-1 block w-full"
-                            autoComplete="name"
+                            autoComplete="given-name"
                             isFocused={true}
-                            onChange={(e) => setData("name", e.target.value)}
+                            onChange={(e) =>
+                                setData("first_name", e.target.value)
+                            }
                             required
                         />
 
-                        <InputError message={errors.name} className="mt-2" />
+                        <InputError
+                            message={errors.first_name}
+                            className="mt-2"
+                        />
+                    </div>
+
+                    <div className="mt-4">
+                        <InputLabel htmlFor="last_name" value="Nom" />
+
+                        <TextInput
+                            id="last_name"
+                            name="last_name"
+                            value={data.last_name}
+                            className="mt-1 block w-full"
+                            autoComplete="family-name"
+                            onChange={(e) =>
+                                setData("last_name", e.target.value)
+                            }
+                            required
+                        />
+
+                        <InputError
+                            message={errors.last_name}
+                            className="mt-2"
+                        />
+                    </div>
+
+                    <div className="mt-4">
+                        <InputLabel htmlFor="phone" value="Téléphone" />
+
+                        <TextInput
+                            id="phone"
+                            type="tel"
+                            name="phone"
+                            value={data.phone}
+                            className="mt-1 block w-full"
+                            autoComplete="tel"
+                            onChange={(e) => setData("phone", e.target.value)}
+                            required
+                        />
+
+                        <InputError message={errors.phone} className="mt-2" />
                     </div>
 
                     <div className="mt-4">
@@ -74,7 +118,7 @@ export default function Register() {
                     </div>
 
                     <div className="mt-4">
-                        <InputLabel htmlFor="password" value="Password" />
+                        <InputLabel htmlFor="password" value="Mot de passe" />
 
                         <TextInput
                             id="password"
@@ -98,7 +142,7 @@ export default function Register() {
                     <div className="mt-4">
                         <InputLabel
                             htmlFor="password_confirmation"
-                            value="Confirm Password"
+                            value="Confirmer le mot de passe"
                         />
 
                         <TextInput
@@ -120,15 +164,15 @@ export default function Register() {
                         />
                     </div>
 
-                    <div className="mt-4 flex items-center justify-end">
+                    <div className="mt-4 flex items-center justify-between">
                         <Link
                             href={route("login")}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="text-sm text-indigo-600 hover:text-indigo-800 underline transition-colors"
                         >
-                            Déjà inscris
+                            Déjà inscrit ?
                         </Link>
 
-                        <PrimaryButton className="ms-4" disabled={processing}>
+                        <PrimaryButton className="ml-4" disabled={processing}>
                             Inscription
                         </PrimaryButton>
                     </div>

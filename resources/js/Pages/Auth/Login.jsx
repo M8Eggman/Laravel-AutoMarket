@@ -3,7 +3,6 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
-import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { LuCar } from "react-icons/lu";
 
@@ -36,7 +35,7 @@ export default function Login({ status, canResetPassword }) {
                 </Link>
             </div>
             <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-                <Head title="Log in" />
+                <Head title="Connexion" />
 
                 {status && (
                     <div className="mb-4 text-sm font-medium text-green-600">
