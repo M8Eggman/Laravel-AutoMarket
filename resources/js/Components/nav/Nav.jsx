@@ -7,29 +7,31 @@ export default function Nav() {
 
     return (
         <nav
-            className="flex items-center gap-10 py-3"
+            className="flex items-center gap-10 py-3 bg-white shadow-md sticky top-0"
             style={{ paddingInline: "max(10vw, 10px)" }}
         >
-            <div className="flex items-center gap-2.5">
-                <LuCar className="text-3xl text-blue-900" />
-                <span className="text-xl font-medium bg-gradient-to-r from-blue-900 to-blue-700 bg-clip-text text-transparent">
-                    AutoMarket
-                </span>
-            </div>
+            <Link href={route("home")}>
+                <div className="flex items-center gap-2.5">
+                    <LuCar className="text-3xl text-blue-900" />
+                    <span className="text-xl font-medium bg-gradient-to-r from-blue-900 to-blue-700 bg-clip-text text-transparent">
+                        AutoMarket
+                    </span>
+                </div>
+            </Link>
             <ul className="flex gap-5">
                 <li>
-                    <Link>Catalogue</Link>
+                    <Link className="font-medium">Catalogue</Link>
                 </li>
 
                 <li>
-                    <Link className="flex items-center gap-2">
+                    <Link className="flex items-center gap-2 font-medium">
                         <GoPlus className="inline mr-1" />
                         Vendez votre voiture
                     </Link>
                 </li>
 
                 <li>
-                    <Link className="flex items-center gap-2">
+                    <Link className="flex items-center gap-2 font-medium">
                         <GoGear className="inline mr-1" />
                         Administration
                     </Link>
@@ -40,8 +42,18 @@ export default function Nav() {
                     <button>Se Déconnecter</button>
                 ) : (
                     <>
-                        <Link href={route("login")}>Connexion</Link>
-                        <Link href={route("register")}>Inscription</Link>
+                        <Link
+                            href={route("register")}
+                            className="py-2 px-4 rounded-lg border border-gray-400 bg-white text-black transition-all duration-300 hover:text-white hover:bg-blue-700 hover:border-transparent"
+                        >
+                            Inscription
+                        </Link>
+                        <Link
+                            href={route("login")}
+                            className="py-2 px-4 rounded-lg bg-blue-700 text-white transition-all duration-300 hover:bg-blue-900"
+                        >
+                            Connexion
+                        </Link>
                     </>
                 )}
             </div>
