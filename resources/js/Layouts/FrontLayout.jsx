@@ -6,7 +6,7 @@ export default function FrontLayout({ children }) {
     return (
         <>
             <Nav />
-            <main>{children}</main>
+            <main id="main">{children}</main>
             <Footer />
         </>
     );

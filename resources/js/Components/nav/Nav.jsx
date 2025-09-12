@@ -8,7 +8,7 @@ export default function Nav() {
     return (
         <nav
             className="flex items-center gap-10 py-3 bg-white shadow-md sticky top-0"
-            style={{ paddingInline: "max(10vw, 10px)" }}
+            style={{ paddingInline: "max(10vw, 2rem)" }}
         >
             <Link href={route("home")}>
                 <div className="flex items-center gap-2.5">
@@ -46,13 +46,13 @@ export default function Nav() {
                             href={route("register")}
                             className="py-2 px-4 rounded-lg border border-gray-400 bg-white text-black transition-all duration-300 hover:text-white hover:bg-blue-700 hover:border-transparent"
                         >
-                            Inscription
+                            Connexion
                         </Link>
                         <Link
                             href={route("login")}
                             className="py-2 px-4 rounded-lg bg-blue-700 text-white transition-all duration-300 hover:bg-blue-900"
                         >
-                            Connexion
+                            Inscription
                         </Link>
                     </>
                 )}
