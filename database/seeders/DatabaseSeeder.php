@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,6 +17,12 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             BrandSeeder::class,
             FuelSeeder::class,
+            JanteSeeder::class,
+            SellerieSeeder::class,
+            ColorSeeder::class,
+            TypeSeeder::class,
+            CylindreeSeeder::class,
+            CarSeeder::class,
         ]);
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
 
             $table->string('model');
-            $table->enum('etat', ['neuf', 'occasion']);
+            $table->enum('etat', ['Neuf', 'Occasion']);
             $table->year('annee')->check('annee >= 1975 AND annee <= YEAR(CURDATE())');
             $table->integer('kilometrage');
             $table->boolean('abs')->default(false);

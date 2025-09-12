@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Sellerie;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,12 @@ class SellerieSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $selleries = [
+            ['type' => 'Cuir'],
+            ['type' => 'Tissus'],
+        ];
+        foreach ($selleries as $sellerie) {
+            Sellerie::updateOrCreate($sellerie);
+        }
     }
 }
