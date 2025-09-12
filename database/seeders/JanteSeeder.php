@@ -20,8 +20,9 @@ class JanteSeeder extends Seeder
             ['size' => '19"'],
             ['size' => 'NONE'],
         ];
+        
         foreach ($jantes as $jante) {
-            Jante::updateOrCreate($jante);
+            Jante::create($jante);
         }
     }
 }

@@ -21,8 +21,9 @@ class ColorSeeder extends Seeder
             ['hex' => '#FFFFFF'],
             ['hex' => '#000000'],
         ];
+        
         foreach ($colors as $color) {
-            Color::updateOrCreate($color);
+            Color::create($color);
         }
     }
 }

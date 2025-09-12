@@ -13,12 +13,13 @@ class SellerieSeeder extends Seeder
      */
     public function run(): void
     {
-        $selleries = [
+         $selleries = [
             ['type' => 'Cuir'],
             ['type' => 'Tissus'],
         ];
+        
         foreach ($selleries as $sellerie) {
-            Sellerie::updateOrCreate($sellerie);
+            Sellerie::create($sellerie);
         }
     }
 }

@@ -21,8 +21,9 @@ class TypeSeeder extends Seeder
             ['name' => 'VAN'],
             ['name' => 'BERLINE'],
         ];
+        
         foreach ($types as $type) {
-            Type::updateOrCreate($type);
+            Type::create($type);
         }
 
     }

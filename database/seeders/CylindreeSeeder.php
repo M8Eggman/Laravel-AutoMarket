@@ -22,8 +22,9 @@ class CylindreeSeeder extends Seeder
             ['size' => '3l'],
             ['size' => 'NONE'],
         ];
+        
         foreach ($cylindrees as $cyl) {
-            Cylindree::updateOrCreate($cyl);
+            Cylindree::create($cyl);
         }
     }
 }
