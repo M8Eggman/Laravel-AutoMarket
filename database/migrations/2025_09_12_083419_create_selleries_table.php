@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('selleries', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['cuir', 'tissus']);
+            $table->enum('type', ['Cuir', 'Tissus']);
             $table->timestamps();
         });
     }
