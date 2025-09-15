@@ -2,48 +2,44 @@ import React, { useState, useEffect, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export default function CarImageCarousel({ images }) {
-    const [currentIndex, setCurrentIndex] = useState(0);
+    // Garde les image qui ne sont pas null
     const carImages = images.filter((i) => i);
+
+    const [currentIndex, setCurrentIndex] = useState(0);
     const intervalRef = useRef(null);
-
-    const startAutoSlide = () => {
-        stopAutoSlide();
-        intervalRef.current = setInterval(() => {
-            setCurrentIndex((prevIndex) =>
-                prevIndex === carImages.length - 1 ? 0 : prevIndex + 1
-            );
-        }, 5000);
-    };
-
-    const stopAutoSlide = () => {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-    };
 
     useEffect(() => {
         startAutoSlide();
         return () => stopAutoSlide();
     }, [carImages.length]);
 
-    const handleUserAction = (action) => {
+    function startAutoSlide() {
+        stopAutoSlide();
+        intervalRef.current = setInterval(() => {
+            setCurrentIndex((prevIndex) =>
+                prevIndex === carImages.length - 1 ? 0 : prevIndex + 1
+            );
+        }, 5000);
+    }
+
+    function stopAutoSlide() {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+    }
+
+    // Chaque interaction de l'utilisateur réinitialise la boucle
+    function handleUserAction(action) {
         action();
         startAutoSlide();
-    };
+    }
 
-    const nextImage = () => {
-        setCurrentIndex((prevIndex) =>
-            prevIndex === carImages.length - 1 ? 0 : prevIndex + 1
-        );
-    };
-
-    const prevImage = () => {
-        setCurrentIndex((prevIndex) =>
-            prevIndex === 0 ? carImages.length - 1 : prevIndex - 1
-        );
-    };
-
-    const goToSlide = (index) => {
-        setCurrentIndex(index);
-    };
+    // Selon l'index avance ou recule de step
+    function changeImage(step) {
+        setCurrentIndex((prevIndex) => {
+            const newIndex =
+                (prevIndex + step + carImages.length) % carImages.length;
+            return newIndex;
+        });
+    }
 
     return (
         <div className="relative h-[35rem] rounded-lg overflow-hidden">
@@ -65,13 +61,13 @@ export default function CarImageCarousel({ images }) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
 
             <button
-                onClick={() => handleUserAction(prevImage)}
+                onClick={() => handleUserAction(() => changeImage(-1))}
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300"
             >
                 <FaChevronLeft className="w-5 h-5" />
             </button>
             <button
-                onClick={() => handleUserAction(nextImage)}
+                onClick={() => handleUserAction(() => changeImage(+1))}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300"
             >
                 <FaChevronRight className="w-5 h-5" />
@@ -81,7 +77,9 @@ export default function CarImageCarousel({ images }) {
                 {carImages.map((_, index) => (
                     <button
                         key={index}
-                        onClick={() => handleUserAction(() => goToSlide(index))}
+                        onClick={() =>
+                            handleUserAction(() => setCurrentIndex(index))
+                        }
                         className={`w-3 h-3 rounded-full transition-all duration-300 ${
                             index === currentIndex
                                 ? "bg-white scale-110"
