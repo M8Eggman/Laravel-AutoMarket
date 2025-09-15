@@ -13,19 +13,16 @@ export default function Home({ brands, fuels, cars }) {
         let filtered = cars;
 
         // filtre par marque
-        if (brandFilter !== "all") {
+        if (brandFilter !== "all")
             filtered = filtered.filter((car) => car.brand.name === brandFilter);
-        }
 
         // filtre par carburant
-        if (fuelFilter !== "all") {
+        if (fuelFilter !== "all")
             filtered = filtered.filter((car) => car.fuel.name === fuelFilter);
-        }
 
         // filtre par etat
-        if (etatFilter !== "all") {
+        if (etatFilter !== "all")
             filtered = filtered.filter((car) => car.etat === etatFilter);
-        }
 
         // filtre par marque, model, type, annee ou fuel
         if (searchFilter !== "") {
