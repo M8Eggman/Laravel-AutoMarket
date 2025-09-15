@@ -181,6 +181,14 @@ export default function Home({ brands, fuels, cars }) {
                             <Card key={el.id} car={el} />
                         ))}
                     </div>
+                    <button
+                        className="text-white text-m-custom mt-5 self-center bg-blue-700 hover:bg-blue-900 px-5 py-2 rounded-md transition"
+                        onClick={() =>
+                            window.scrollTo({ top: 0, behavior: "smooth" })
+                        }
+                    >
+                        Retourner en haut
+                    </button>
                 </div>
             </section>
         </>

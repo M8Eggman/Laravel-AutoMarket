@@ -18,9 +18,10 @@ Route::get('/cars/store', [CarController::class, 'store'])
     ->middleware('auth');
 Route::get('/cars/{id}/show', [CarController::class, 'show'])->name('cars.show');
 
+// Redirection vers home
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return Inertia::location(route("home"));
+})->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
