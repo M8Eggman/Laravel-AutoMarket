@@ -62,7 +62,7 @@ class CarFactory extends Factory
 
             'model' => $this->faker->word(),
             'etat' => $this->faker->randomElement(['Neuf', 'Occasion']),
-            'annee' => $this->faker->year(),
+            'annee' => $this->faker->numberBetween(1975, date('Y')),
             'kilometrage' => $this->faker->numberBetween(0, 150000),
             'abs' => $this->faker->boolean(),
             'image1_path' => $imagePaths[0],

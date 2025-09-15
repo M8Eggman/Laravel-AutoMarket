@@ -23,14 +23,14 @@ export default function Home({ brands, fuels, cars }) {
 
         // filtre par marque, model, type, annee ou fuel
         if (searchFilter !== "") {
-            const filterLower = searchFilter.toLowerCase();
+            const filterLower = searchFilter.toLowerCase().trim();
             filtered = filtered.filter(
                 (car) =>
                     car.model.toLowerCase().includes(filterLower) ||
                     car.brand?.name.toLowerCase().includes(filterLower) ||
                     car.fuel?.name.toLowerCase().includes(filterLower) ||
                     car.type?.name.toLowerCase().includes(filterLower) ||
-                    car.annee.toLowerCase().includes(filterLower) 
+                    car.annee.toLowerCase().includes(filterLower)
             );
         }
 
