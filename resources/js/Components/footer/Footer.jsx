@@ -7,7 +7,7 @@ export default function Footer() {
         <footer className="bg-blue-900 text-white">
             <div
                 className="py-10 grid gap-10 items-center md:items-start"
-                style={{ paddingInline: "max(8vw, 1rem)" }}
+                style={{ paddingInline: "max(6vw, 1rem)" }}
             >
                 <div className="grid md:grid-cols-[1fr_3fr] gap-10">
                     <Link
@@ -29,9 +29,9 @@ export default function Footer() {
                             <input
                                 type="email"
                                 placeholder="Votre email"
-                                className="px-4 py-2 rounded-l-lg border border-gray-300 text-black flex-1 min-w-0 sm:w-80"
+                                className="p-2 sm:px-4 sm:py-2  rounded-l-lg border border-gray-300 text-black flex-1 min-w-0 sm:w-80"
                             />
-                            <button className="px-4 py-2 bg-white text-blue-900 rounded-r-lg font-medium hover:bg-gray-200 transition-colors duration-300">
+                            <button className="p-2 sm:px-4 sm:py-2 bg-white text-blue-900 rounded-r-lg font-medium hover:bg-gray-200 transition-colors duration-300">
                                 S’abonner
                             </button>
                         </div>

@@ -13,4 +13,9 @@ class Jante extends Model
     protected $fillable = [
         'size',
     ];
+
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
 }

@@ -13,4 +13,9 @@ class Sellerie extends Model
     protected $fillable = [
         'type',
     ];
+    
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
 }

@@ -7,7 +7,7 @@ export default function Nav() {
 
     return (
         <nav
-            className="flex flex-col items-center lg:flex-row justify-between gap-3 lg:gap-4 py-3 bg-white/50 backdrop-blur-sm shadow-md sticky top-0"
+            className="flex flex-col items-center lg:flex-row justify-between gap-3 lg:gap-4 py-3 bg-white/50 backdrop-blur-sm shadow-md sticky top-0 z-50"
             style={{ paddingInline: "max(8vw, 1rem)" }}
         >
             <Link

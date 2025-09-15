@@ -14,4 +14,9 @@ class Avatar extends Model
         'path',
         'user_id'
     ];
+
+     public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

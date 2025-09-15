@@ -31,4 +31,44 @@ class Car extends Model
         'prix',
         'description',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function fuel()
+    {
+        return $this->belongsTo(Fuel::class);
+    }
+
+    public function jante()
+    {
+        return $this->belongsTo(Jante::class);
+    }
+
+    public function sellerie()
+    {
+        return $this->belongsTo(Sellerie::class);
+    }
+
+    public function color()
+    {
+        return $this->belongsTo(Color::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
+    }
+
+    public function cylindree()
+    {
+        return $this->belongsTo(Cylindree::class);
+    }
 }

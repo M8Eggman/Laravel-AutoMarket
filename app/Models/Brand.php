@@ -14,4 +14,9 @@ class Brand extends Model
         'name',
         'logo'
     ];
+
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
 }
