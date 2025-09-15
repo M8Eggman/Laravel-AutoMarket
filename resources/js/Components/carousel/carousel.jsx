@@ -46,10 +46,9 @@ export default function CarImageCarousel({ images }) {
     };
 
     return (
-        <div className="relative w-full h-[40rem] rounded-lg overflow-hidden">
-            {/* Track d'images */}
+        <div className="relative h-[35rem] rounded-lg overflow-hidden">
             <div
-                className="flex h-full w-full transition-transform duration-700 ease-in-out"
+                className="flex h-full transition-transform duration-700 ease-in-out"
                 style={{
                     transform: `translateX(-${currentIndex * 100}%)`,
                 }}
@@ -63,18 +62,14 @@ export default function CarImageCarousel({ images }) {
                     />
                 ))}
             </div>
-
-            {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
 
-            {/* Boutons navigation */}
             <button
                 onClick={() => handleUserAction(prevImage)}
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300"
             >
                 <FaChevronLeft className="w-5 h-5" />
             </button>
-
             <button
                 onClick={() => handleUserAction(nextImage)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300"
@@ -82,7 +77,6 @@ export default function CarImageCarousel({ images }) {
                 <FaChevronRight className="w-5 h-5" />
             </button>
 
-            {/* Points de navigation */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
                 {carImages.map((_, index) => (
                     <button
@@ -97,7 +91,6 @@ export default function CarImageCarousel({ images }) {
                 ))}
             </div>
 
-            {/* Compteur */}
             <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
                 {currentIndex + 1} / {carImages.length}
             </div>

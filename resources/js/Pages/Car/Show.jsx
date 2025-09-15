@@ -8,10 +8,13 @@ import { LuCalculator } from "react-icons/lu";
 export default function CarShow({ car, financement }) {
     return (
         <section className="flex justify-center py-10 bg-gray-100">
-            <div className="flex gap-10" style={{ width: "min(1500px, 90vw)" }}>
+            <div
+                className="flex gap-5 flex-col md:flex-row"
+                style={{ width: "min(1500px, 90vw)" }}
+            >
                 {/* Information de la voiture */}
                 <div className="flex flex-col gap-5 flex-grow">
-                    <div>
+                    <div className="hidden sm:block">
                         <CarImageCarousel
                             images={[
                                 car.image1_path,
@@ -31,7 +34,7 @@ export default function CarShow({ car, financement }) {
                                     {car.prix.toLocaleString()} €
                                 </p>
                             </div>
-                            <div className="flex justify-between gap-5 text-gray-600 font-medium text-m-custom">
+                            <div className="flex justify-between gap-5 text-gray-600 font-medium text-m-custom flex-wrap">
                                 <span className="flex items-center gap-2">
                                     <FaCalendarAlt className="w-4 h-4" />
                                     {car.annee}
@@ -60,7 +63,7 @@ export default function CarShow({ car, financement }) {
                             <h2 className="font-semibold text-h5">
                                 Caractéristique
                             </h2>
-                            <div className="grid grid-cols-2 gap-3 text-gray-700">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-700">
                                 <div className="flex justify-between">
                                     <span className="font-medium">État :</span>
                                     <span>{car.etat}</span>
@@ -143,7 +146,7 @@ export default function CarShow({ car, financement }) {
                 </div>
 
                 {/* Paiement et Contact */}
-                <div className="w-[28rem] flex flex-col gap-5">
+                <div className="lg:min-w-[28rem] flex flex-col gap-5">
                     <div className="flex flex-col gap-2.5 text-m-custom bg-white rounded-lg p-5">
                         <h3 className="font-bold text-h6">Vendeur</h3>
                         <p className="font-medium text-m-custom">
@@ -161,7 +164,7 @@ export default function CarShow({ car, financement }) {
                             <LuCalculator />
                             Simulation de financement
                         </h3>
-                        <div className="flex justify-between gap-5">
+                        <div className="flex justify-between gap-5 flex-col lg:flex-row">
                             <div className="bg-gray-200 rounded-lg flex-1 px-5 py-3">
                                 <h4 className="text-sm-custom text-gray-700">
                                     Prix du véhicule
