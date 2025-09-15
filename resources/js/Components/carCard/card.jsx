@@ -6,7 +6,7 @@ export default function Card({ car }) {
         <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="relative">
                 <img
-                    src={`/storage/${car.image1_path}`}
+                    src={car.image1_path}
                     alt={car.model}
                     className="w-full h-60 object-cover"
                 />

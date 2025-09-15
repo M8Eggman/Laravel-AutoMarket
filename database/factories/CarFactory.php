@@ -26,12 +26,29 @@ class CarFactory extends Factory
     public function definition(): array
     {
         $fuel = Fuel::all()->random();
-        $files = Storage::disk('public')->allFiles('voiture_seeder');
 
         // Choix cylindrée selon le fuel
         $cylindree = $fuel->name === 'Electrique'
             ? Cylindree::where('size', 'NONE')->first()
             : Cylindree::all()->where('size', '!=', 'NONE')->random();
+
+        // Récupère les fichiers dans storage/voiture_seeder
+        $files = Storage::disk('public')->allFiles('voiture_seeder');
+
+        // Choisis une image du tableau
+        $image = '/storage/' . fake()->randomElement($files);
+
+        // Choisis le nombre d'images qui vont être déternminée
+        $numberOfImages = rand(1, 4);
+
+        $imagePaths = [];
+
+        // Selon le nombre d'images remplis le tableau avec la même image pour tous  
+        for ($i = 0; $i <= 3; $i++) {
+            $i <= $numberOfImages
+                ? $imagePaths[$i] = $image
+                : $imagePaths[$i] = null;
+        }
 
         return [
             'user_id' => User::all()->random()->id,
@@ -48,10 +65,10 @@ class CarFactory extends Factory
             'annee' => $this->faker->year(),
             'kilometrage' => $this->faker->numberBetween(0, 150000),
             'abs' => $this->faker->boolean(),
-            'image1_path' => $this->faker->randomElement($files),
-            'image2_path' => 'cars/sample2.jpg',
-            'image3_path' => 'cars/sample3.jpg',
-            'image4_path' => 'cars/sample4.jpg',
+            'image1_path' => $imagePaths[0],
+            'image2_path' => $imagePaths[1],
+            'image3_path' => $imagePaths[2],
+            'image4_path' => $imagePaths[3],
             'prix' => $this->faker->numberBetween(15000, 60000),
             'description' => $this->faker->sentence(12),
         ];

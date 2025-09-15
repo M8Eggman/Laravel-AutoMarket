@@ -6,20 +6,36 @@ export default function Home({ brands, fuels, cars }) {
     const [filteredCars, setFilteredCars] = useState(cars);
     const [brandFilter, setBrandFilter] = useState("all");
     const [fuelFilter, setFuelFilter] = useState("all");
+    const [searchFilter, setSearchFilter] = useState("");
 
     useEffect(() => {
         let filtered = cars;
 
+        // filtre par marque
         if (brandFilter !== "all") {
             filtered = filtered.filter((car) => car.brand.name === brandFilter);
         }
 
+        // filtre par carburant
         if (fuelFilter !== "all") {
             filtered = filtered.filter((car) => car.fuel.name === fuelFilter);
         }
 
+        // filtre par marque, model, type, annee ou fuel
+        if (searchFilter !== "") {
+            const filterLower = searchFilter.toLowerCase();
+            filtered = filtered.filter(
+                (car) =>
+                    car.model.toLowerCase().includes(filterLower) ||
+                    car.brand?.name.toLowerCase().includes(filterLower) ||
+                    car.fuel?.name.toLowerCase().includes(filterLower) ||
+                    car.type?.name.toLowerCase().includes(filterLower) ||
+                    car.annee.toLowerCase().includes(filterLower) 
+            );
+        }
+
         setFilteredCars(filtered);
-    }, [brandFilter, fuelFilter, cars]);
+    }, [brandFilter, fuelFilter, searchFilter, cars]);
 
     return (
         <>
@@ -42,6 +58,8 @@ export default function Home({ brands, fuels, cars }) {
                         placeholder="Rechercher par marque, modèle..."
                         name="search"
                         id="search"
+                        value={searchFilter}
+                        onChange={(e) => setSearchFilter(e.target.value)}
                     />
                 </div>
             </section>
@@ -105,7 +123,7 @@ export default function Home({ brands, fuels, cars }) {
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredCars.map((el) => (
-                            <Card key={el.id} car={el}/>
+                            <Card key={el.id} car={el} />
                         ))}
                     </div>
                 </div>
