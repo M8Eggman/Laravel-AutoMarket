@@ -10,12 +10,17 @@ export default function Footer() {
                 style={{ paddingInline: "max(8vw, 1rem)" }}
             >
                 <div className="grid md:grid-cols-[1fr_3fr] gap-10">
-                    <div className="flex items-center gap-2.5">
-                        <LuCar className="text-3xl text-white" />
-                        <span className="text-xl font-medium bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent">
-                            AutoMarket
-                        </span>
-                    </div>
+                    <Link
+                        href={route("home")}
+                        className="flex items-center gap-2.5 flex-shrink-0"
+                    >
+                        <div className="flex items-center gap-2.5">
+                            <LuCar className="text-3xl text-white" />
+                            <span className="text-xl font-medium">
+                                AutoMarket
+                            </span>
+                        </div>
+                    </Link>
                     <div className="flex flex-col md:items-end gap-3">
                         <span className="font-medium mb-2 md:mb-0">
                             Abonnez-vous à la newsletter
