@@ -17,6 +17,14 @@ class CarSeeder extends Seeder
         $admin = User::where('email', 'admin@example.com')->first();
 
         Car::factory()
+            ->create([
+                'user_id' => $admin->id,
+                'image1_path' => '/storage/voiture_seeder/1200x680.jpg',
+                'image2_path' => '/storage/voiture_seeder/1200x680.jpg',
+                'image3_path' => '/storage/voiture_seeder/1200x680.jpg',
+                'image4_path' => '/storage/voiture-jaune-plus-de-valeur-marche-occasion.jpg',
+            ]);
+        Car::factory()
             ->count(100)
             ->create(['user_id' => $admin->id,]);
     }

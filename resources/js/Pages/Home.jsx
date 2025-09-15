@@ -37,6 +37,12 @@ export default function Home({ brands, fuels, cars }) {
         setFilteredCars(filtered);
     }, [brandFilter, fuelFilter, searchFilter, cars]);
 
+    function resetFilter() {
+        setBrandFilter("all");
+        setFuelFilter("all");
+        setSearchFilter("");
+    }
+
     return (
         <>
             <section
@@ -75,6 +81,7 @@ export default function Home({ brands, fuels, cars }) {
                             name="brand"
                             id="brand"
                             className="rounded-md bg-gray-50"
+                            value={brandFilter}
                             onChange={(e) => setBrandFilter(e.target.value)}
                         >
                             <option value="all">Toutes les marques</option>
@@ -116,6 +123,12 @@ export default function Home({ brands, fuels, cars }) {
                             </label>
                         ))}
                     </div>
+                    <button
+                        className="text-white text-m-custom bg-blue-700 hover:bg-blue-900 px-5 py-2 rounded-md transition"
+                        onClick={resetFilter}
+                    >
+                        Reset
+                    </button>
                 </div>
                 <div className="flex flex-col gap-2.5 flex-grow w-full">
                     <h3 className="text-h5 font-medium">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CarController extends Controller
 {
@@ -34,9 +35,38 @@ class CarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Car $car)
+    public function show($id)
     {
-        //
+        $car = Car::with([
+            'brand',
+            'fuel',
+            'type',
+            'jante',
+            'sellerie',
+            'color',
+            'cylindree',
+            'user'
+        ])->findOrFail($id);
+
+        $prix = $car->prix;
+        $apport = 9000;
+        $duree = 60;
+        $tauxAnnuel = 3;
+
+        $montantEmprunte = $prix - $apport;
+        $tauxMensuel = $tauxAnnuel / 100 / 12;
+
+        $mensualite = round($montantEmprunte * ($tauxMensuel / (1 - pow(1 + $tauxMensuel, -$duree))), 2);
+
+        $financement = [
+            'prix' => $prix,
+            'taeg' => $tauxAnnuel,
+            'mensualite' => $mensualite,
+            'apport' => $apport,
+            'duree' => $duree,
+        ];
+
+        return Inertia::render('Car/Show', compact('car', 'financement'));
     }
 
     /**

@@ -21,7 +21,10 @@ export default function Nav() {
             </Link>
             <ul className="flex flex-col items-center lg:flex-row gap-2.5 lg:gap-5 flex-1 justify-center md:justify-start">
                 <li>
-                    <Link className="font-medium hover:text-blue-700 transition-colors duration-300">
+                    <Link
+                        href={route("home")}
+                        className="font-medium hover:text-blue-700 transition-colors duration-300"
+                    >
                         Catalogue
                     </Link>
                 </li>

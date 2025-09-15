@@ -26,6 +26,7 @@ export default {
                 "l-custom": "clamp(1.125rem, 2.2vw, 1.375rem)",
                 "m-custom": "clamp(1rem, 2vw, 1.125rem)",
                 "sm-custom": "clamp(0.875rem, 1.5vw, 1rem)",
+                "xs-custom": "clamp(0.75rem, 1.2vw, 0.875rem)",
             },
         },
     },
