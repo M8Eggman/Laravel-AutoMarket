@@ -128,6 +128,7 @@ export default function CarShow({ car, financement }) {
                                                     car.color?.hex || "#ffffff",
                                             }}
                                         ></div>
+                                        <span>{car.color?.name}</span>
                                     </div>
                                 </div>
                                 {car.cylindree?.size !== "NONE" && (

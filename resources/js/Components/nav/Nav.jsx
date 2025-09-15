@@ -29,14 +29,17 @@ export default function Nav() {
                     </Link>
                 </li>
                 <li>
-                    <Link className="flex items-center gap-2 font-medium hover:text-blue-700 transition-colors duration-300">
-                        <GoPlus className="inline mr-1" />
+                    <Link
+                        href={route("cars.create")}
+                        className="flex items-center gap-2.5 font-medium hover:text-blue-700 transition-colors duration-300"
+                    >
+                        <GoPlus />
                         Vendez votre voiture
                     </Link>
                 </li>
                 <li>
-                    <Link className="flex items-center gap-2 font-medium hover:text-blue-700 transition-colors duration-300">
-                        <GoGear className="inline mr-1" />
+                    <Link className="flex items-center gap-2.5 font-medium hover:text-blue-700 transition-colors duration-300">
+                        <GoGear />
                         Administration
                     </Link>
                 </li>

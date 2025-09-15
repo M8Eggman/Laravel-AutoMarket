@@ -7,10 +7,16 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/',[HomeController::class, 'index'] )->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Route voitures
-Route::get('/cars/{id}/show',[CarController::class, 'show'] )->name('cars.show');
+Route::get('/cars/create', [CarController::class, 'create'])
+    ->name('cars.create')
+    ->middleware('auth');
+Route::get('/cars/store', [CarController::class, 'store'])
+    ->name('cars.store')
+    ->middleware('auth');
+Route::get('/cars/{id}/show', [CarController::class, 'show'])->name('cars.show');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -22,4 +28,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -14,14 +14,14 @@ class ColorSeeder extends Seeder
     public function run(): void
     {
         $colors = [
-            ['hex' => '#F54927'],
-            ['hex' => '#27F549'],
-            ['hex' => '#2749F5'],
-            ['hex' => '#F5F527'],
-            ['hex' => '#FFFFFF'],
-            ['hex' => '#000000'],
+            ['hex' => '#F54927', 'name' => 'Rouge vif'],
+            ['hex' => '#27F549', 'name' => 'Vert vif'],
+            ['hex' => '#2749F5', 'name' => 'Bleu vif'],
+            ['hex' => '#F5F527', 'name' => 'Jaune vif'],
+            ['hex' => '#FFFFFF', 'name' => 'Blanc'],
+            ['hex' => '#000000', 'name' => 'Noir'],
         ];
-        
+
         foreach ($colors as $color) {
             Color::create($color);
         }

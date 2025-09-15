@@ -1,17 +1,17 @@
-export const formatEuro = (value) => {
+export function formatEuro(value) {
     if (typeof value !== "number") value = Number(value);
     return value.toLocaleString("fr-FR", {
         style: "currency",
         currency: "EUR",
     });
-};
+}
 
-export const formatPercent = (value) => {
+export function formatPercent(value) {
     if (typeof value !== "number") value = Number(value);
     return value.toFixed(2) + " %";
-};
+}
 
-export const formatNumber = (value) => {
+export function formatNumber(value) {
     if (typeof value !== "number") value = Number(value);
     return value.toLocaleString("fr-FR");
-};
+}
