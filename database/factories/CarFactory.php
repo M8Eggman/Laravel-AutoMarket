@@ -32,6 +32,9 @@ class CarFactory extends Factory
             ? Cylindree::where('size', 'NONE')->first()
             : Cylindree::all()->where('size', '!=', 'NONE')->random();
 
+        // Etat de la voiture pour déterminer le km
+        $etat = $this->faker->randomElement(['Neuf', 'Occasion']);
+
         // Récupère les fichiers dans storage/voiture_seeder
         $files = Storage::disk('public')->allFiles('voiture_seeder');
 
@@ -61,9 +64,9 @@ class CarFactory extends Factory
             'type_id' => Type::all()->random()->id,
 
             'model' => $this->faker->word(),
-            'etat' => $this->faker->randomElement(['Neuf', 'Occasion']),
+            'etat' => $etat,
             'annee' => $this->faker->numberBetween(1975, date('Y')),
-            'kilometrage' => $this->faker->numberBetween(0, 150000),
+            'kilometrage' => $etat === 'Neuf' ? 0 : $this->faker->numberBetween(1, 150000),
             'abs' => $this->faker->boolean(),
             'image1_path' => $imagePaths[0],
             'image2_path' => $imagePaths[1],
