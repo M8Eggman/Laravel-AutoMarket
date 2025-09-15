@@ -6,6 +6,7 @@ export default function Home({ brands, fuels, cars }) {
     const [filteredCars, setFilteredCars] = useState(cars);
     const [brandFilter, setBrandFilter] = useState("all");
     const [fuelFilter, setFuelFilter] = useState("all");
+    const [etatFilter, setEtatFilter] = useState("all");
     const [searchFilter, setSearchFilter] = useState("");
 
     useEffect(() => {
@@ -21,6 +22,11 @@ export default function Home({ brands, fuels, cars }) {
             filtered = filtered.filter((car) => car.fuel.name === fuelFilter);
         }
 
+        // filtre par etat
+        if (etatFilter !== "all") {
+            filtered = filtered.filter((car) => car.etat === etatFilter);
+        }
+
         // filtre par marque, model, type, annee ou fuel
         if (searchFilter !== "") {
             const filterLower = searchFilter.toLowerCase().trim();
@@ -30,14 +36,16 @@ export default function Home({ brands, fuels, cars }) {
                     car.brand?.name.toLowerCase().includes(filterLower) ||
                     car.fuel?.name.toLowerCase().includes(filterLower) ||
                     car.type?.name.toLowerCase().includes(filterLower) ||
+                    car.etat.toLowerCase().includes(filterLower) ||
                     car.annee.toLowerCase().includes(filterLower)
             );
         }
 
         setFilteredCars(filtered);
-    }, [brandFilter, fuelFilter, searchFilter, cars]);
+    }, [brandFilter, fuelFilter, searchFilter, etatFilter, cars]);
 
     function resetFilter() {
+        setEtatFilter("all");
         setBrandFilter("all");
         setFuelFilter("all");
         setSearchFilter("");
@@ -91,6 +99,40 @@ export default function Home({ brands, fuels, cars }) {
                                 </option>
                             ))}
                         </select>
+                    </div>
+                    <div className="flex flex-col gap-2.5">
+                        <label htmlFor="etat">État</label>
+
+                        <label className="flex items-center gap-2">
+                            <input
+                                type="radio"
+                                name="etat"
+                                value="all"
+                                checked={etatFilter === "all"}
+                                onChange={(e) => setEtatFilter(e.target.value)}
+                            />
+                            <span>Tous</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                            <input
+                                type="radio"
+                                name="etat"
+                                value="Neuf"
+                                checked={etatFilter === "Neuf"}
+                                onChange={(e) => setEtatFilter(e.target.value)}
+                            />
+                            <span>Neuf</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                            <input
+                                type="radio"
+                                name="etat"
+                                value="Occasion"
+                                checked={etatFilter === "Occasion"}
+                                onChange={(e) => setEtatFilter(e.target.value)}
+                            />
+                            <span>Occasion</span>
+                        </label>
                     </div>
                     <div className="flex flex-col gap-2.5">
                         <label htmlFor="carburant">Carburant</label>
