@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Car;
+use App\Models\Color;
+use App\Models\Cylindree;
+use App\Models\Fuel;
+use App\Models\Jante;
+use App\Models\Sellerie;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -21,7 +28,23 @@ class CarController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Car/Create');
+        $brands = Brand::all();
+        $fuels = Fuel::all();
+        $jantes = Jante::all();
+        $selleries = Sellerie::all();
+        $colors = Color::all();
+        $types = Type::all();
+        $cylindrees = Cylindree::all();
+
+        return Inertia::render('Car/Create', compact(
+            'brands',
+            'fuels',
+            'jantes',
+            'selleries',
+            'colors',
+            'types',
+            'cylindrees'
+        ));
     }
 
     /**

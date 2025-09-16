@@ -13,7 +13,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/cars/create', [CarController::class, 'create'])
     ->name('cars.create')
     ->middleware('auth');
-Route::get('/cars/store', [CarController::class, 'store'])
+Route::post('/cars/store', [CarController::class, 'store'])
     ->name('cars.store')
     ->middleware('auth');
 Route::get('/cars/{id}/show', [CarController::class, 'show'])->name('cars.show');
