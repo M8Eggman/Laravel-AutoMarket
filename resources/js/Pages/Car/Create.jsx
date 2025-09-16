@@ -16,7 +16,7 @@ export default function CarCreate({
         model: "",
         etat: "",
         annee: "",
-        kilometrage: "",
+        kilometrage: 0,
         abs: false,
         prix: 0,
         description: "",
@@ -29,6 +29,8 @@ export default function CarCreate({
         jante_id: null,
         sellerie_id: null,
         color_id: null,
+        new_color_hex: null,
+        new_color_name: null,
         type_id: null,
         cylindree_id: null,
     });
@@ -39,8 +41,6 @@ export default function CarCreate({
                 "cylindree_id",
                 cylindrees.find((c) => c.size === "NONE")?.id ?? null
             );
-        } else {
-            setData("cylindree_id", "");
         }
     }, [data.fuel_id]);
 
@@ -49,6 +49,13 @@ export default function CarCreate({
             setData("kilometrage", 0);
         }
     }, [data.etat]);
+
+    useEffect(() => {
+        if (color_id !== "new") {
+            setData("new_color_name", null);
+            setData("new_color_hex", null);
+        }
+    }, [data.color_id]);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -161,6 +168,7 @@ export default function CarCreate({
                                 id="kilometrage"
                                 placeholder="Ex : 15000"
                                 value={data.kilometrage}
+                                min={0}
                                 onChange={(e) =>
                                     setData("kilometrage", e.target.value)
                                 }
@@ -176,6 +184,25 @@ export default function CarCreate({
                         </div>
                     )}
 
+                    {/* ABS */}
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            id="abs"
+                            checked={data.abs}
+                            onChange={(e) => setData("abs", e.target.checked)}
+                            className="w-5 h-5"
+                        />
+                        <label htmlFor="abs" className="font-medium">
+                            ABS
+                        </label>
+                        {errors.abs && (
+                            <small className="text-red-600 ml-2">
+                                {errors.abs}
+                            </small>
+                        )}
+                    </div>
+
                     {/* Prix */}
                     <div className="flex flex-col">
                         <label htmlFor="prix" className="font-medium mb-1">
@@ -186,6 +213,7 @@ export default function CarCreate({
                             id="prix"
                             placeholder="Ex : 12000"
                             value={data.prix}
+                            min={0}
                             onChange={(e) => setData("prix", e.target.value)}
                             className={`border rounded-md px-3 py-2 ${
                                 errors.prix ? "border-red-500" : ""
@@ -391,38 +419,6 @@ export default function CarCreate({
                             )}
                         </div>
 
-                        {/* Couleur */}
-                        <div className="flex flex-col">
-                            <label
-                                htmlFor="color_id"
-                                className="font-medium mb-1"
-                            >
-                                Couleur <span className="text-red-500">*</span>
-                            </label>
-                            <select
-                                id="color_id"
-                                value={data.color_id || ""}
-                                onChange={(e) =>
-                                    setData("color_id", e.target.value)
-                                }
-                                className={`border rounded-md px-3 py-2 ${
-                                    errors.color_id ? "border-red-500" : ""
-                                }`}
-                            >
-                                <option value="">Choisir une couleur</option>
-                                {colors.map((color) => (
-                                    <option key={color.id} value={color.id}>
-                                        {color.name}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.color_id && (
-                                <small className="text-red-600">
-                                    {errors.color_id}
-                                </small>
-                            )}
-                        </div>
-
                         {/* Type */}
                         <div className="flex flex-col">
                             <label
@@ -498,6 +494,99 @@ export default function CarCreate({
                         )}
                     </div>
 
+                    {/* Couleur */}
+                    <div className="flex flex-col">
+                        <label htmlFor="color_id" className="font-medium mb-1">
+                            Couleur <span className="text-red-500">*</span>
+                        </label>
+
+                        {/* Select pour choisir une couleur existante */}
+                        <select
+                            id="color_id"
+                            value={data.color_id || ""}
+                            onChange={(e) =>
+                                setData("color_id", e.target.value)
+                            }
+                            className={`border rounded-md px-3 py-2 ${
+                                errors.color_id ? "border-red-500" : ""
+                            }`}
+                        >
+                            <option value="">Choisir une couleur</option>
+                            <option value="new">
+                                Ajouter une nouvelle couleur
+                            </option>
+                            {colors.map((color) => (
+                                <option key={color.id} value={color.id}>
+                                    {color.name}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.color_id && (
+                            <small className="text-red-600">
+                                {errors.color_id}
+                            </small>
+                        )}
+
+                        {/* Affiche les inputs texte + color si l'utilisateur veut créer une nouvelle couleur */}
+                        {data.color_id === "new" && (
+                            <div className="flex flex-col gap-5 mt-5">
+                                <input
+                                    type="text"
+                                    placeholder="Nom de la couleur"
+                                    value={data.new_color_name || ""}
+                                    onChange={(e) =>
+                                        setData(
+                                            "new_color_name",
+                                            e.target.value
+                                        )
+                                    }
+                                    className={`border rounded-md px-3 py-2 ${
+                                        errors.new_color_name
+                                            ? "border-red-500"
+                                            : ""
+                                    }`}
+                                />
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        type="color"
+                                        value={data.new_color_hex || "#000000"}
+                                        onChange={(e) =>
+                                            setData(
+                                                "new_color_hex",
+                                                e.target.value
+                                            )
+                                        }
+                                        className="w-16 h-10 border rounded-md"
+                                    />
+
+                                    <input
+                                        type="text"
+                                        placeholder="#RRGGBB"
+                                        value={data.new_color_hex || "#000000"}
+                                        maxLength={7}
+                                        onChange={(e) =>
+                                            setData(
+                                                "new_color_hex",
+                                                e.target.value
+                                            )
+                                        }
+                                        className="border rounded-md flex-grow px-3 py-2"
+                                    />
+                                </div>
+                                {errors.new_color_name && (
+                                    <small className="text-red-600">
+                                        {errors.new_color_name}
+                                    </small>
+                                )}
+                                {errors.new_color_hex && (
+                                    <small className="text-red-600">
+                                        {errors.new_color_hex}
+                                    </small>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
                     {/* Bouton */}
                     <button
                         type="submit"
@@ -506,7 +595,7 @@ export default function CarCreate({
                         Publier l'annonce
                     </button>
 
-                    <p className="text-gray-700 text-sm sm:text-base mt-4">
+                    <p className="text-gray-700 text-sm sm:text-base">
                         Tous les champs accompagnés de{" "}
                         <span className="text-red-500 font-semibold">*</span>{" "}
                         sont obligatoires.

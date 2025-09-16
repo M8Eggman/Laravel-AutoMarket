@@ -5,13 +5,20 @@ import { FaCalendarAlt, FaRoad, FaGasPump, FaCogs } from "react-icons/fa";
 import { GoMail } from "react-icons/go";
 import { LuCalculator } from "react-icons/lu";
 
-export default function CarShow({ car, financement }) {
+export default function CarShow({ car, financement, flash }) {
     return (
         <section className="flex justify-center py-10 bg-gray-100">
             <div
                 className="flex gap-5 flex-col md:flex-row"
                 style={{ width: "min(1500px, 90vw)" }}
             >
+                {/* Message de succès */}
+                {flash?.success && (
+                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-5">
+                        {flash.success}
+                    </div>
+                )}
+
                 {/* Information de la voiture */}
                 <div className="flex flex-col gap-5 flex-grow">
                     <div className="hidden sm:block">

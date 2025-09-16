@@ -11,6 +11,7 @@ use App\Models\Jante;
 use App\Models\Sellerie;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Str;
 
@@ -58,7 +59,7 @@ class CarController extends Controller
             'model' => ['required', 'string', 'max:255'],
             'etat' => ['required', 'in:Neuf,Occasion'],
             'annee' => ['required', 'digits:4', 'integer', 'min:1975', 'max:' . date('Y')],
-            'kilometrage' => ['nullable', 'integer', 'min:0'],
+            'kilometrage' => ['required', 'integer', 'min:0'],
             'abs' => ['boolean'],
             'prix' => ['required', 'numeric', 'min:0'],
             'description' => ['required', 'string'],
@@ -70,9 +71,12 @@ class CarController extends Controller
             'fuel_id' => ['required', 'exists:fuels,id'],
             'jante_id' => ['required', 'exists:jantes,id'],
             'sellerie_id' => ['required', 'exists:selleries,id'],
-            'color_id' => ['required', 'exists:colors,id'],
             'type_id' => ['required', 'exists:types,id'],
             'cylindree_id' => ['required', 'exists:cylindrees,id'],
+            'color_id' => ['required'],
+            // Si nouvelle couleur, validate name + hex
+            'new_color_name' => $request->color_id === 'new' ? ['required', 'string', 'max:255', 'unique:colors,name'] : [],
+            'new_color_hex' => $request->color_id === 'new' ? ['required', 'string', 'size:7', 'unique:colors,hex'] : [],
         ], [], [
             'model' => 'modèle',
             'etat' => 'état',
@@ -92,9 +96,25 @@ class CarController extends Controller
             'color_id' => 'couleur',
             'type_id' => 'type',
             'cylindree_id' => 'cylindrée',
+            'new_color_name' => 'nom de la couleur',
+            'new_color_hex' => 'code couleur',
         ]);
 
         $car = new Car();
+
+        // Si nouvelle couleur, on la crée sinon on utilise le request de base
+        if ($request->color_id === 'new') {
+            $color = new Color();
+
+            $color->name = $request->new_color_name;
+            $color->hex = $request->new_color_hex;
+
+            $color->save();
+
+            $car->color_id = $color->id;
+        } else {
+            $car->color_id = $request->color_id;
+        }
 
         $car->model = $request->model;
         $car->etat = $request->etat;
@@ -118,7 +138,7 @@ class CarController extends Controller
                 // Stocke l'image dans public/voiture
                 $filePath = $file->storeAs('voiture', $fileName, 'public');
 
-                $car->$field = "\storage\{$filePath}";
+                $car->$field = '/storage/' . $filePath;
             }
         }
 
@@ -127,7 +147,6 @@ class CarController extends Controller
         $car->fuel_id = $request->fuel_id;
         $car->jante_id = $request->jante_id;
         $car->sellerie_id = $request->sellerie_id;
-        $car->color_id = $request->color_id;
         $car->type_id = $request->type_id;
         $car->cylindree_id = $request->cylindree_id;
 
@@ -212,6 +231,6 @@ class CarController extends Controller
      */
     public function destroy($id)
     {
-        
+
     }
 }
