@@ -34,7 +34,7 @@ export default function CarShow({ car, financement, flash, auth }) {
                     </div>
                     <div className="bg-white rounded-lg shadow-md px-7 py-5">
                         <div className="flex flex-col gap-5 border-b pb-5">
-                            <div className="flex items-start justify-between">
+                            <div className="flex gap-2 items-start justify-between">
                                 <div>
                                     <h1 className="font-semibold text-h4">
                                         {car.brand?.name} {car.model}

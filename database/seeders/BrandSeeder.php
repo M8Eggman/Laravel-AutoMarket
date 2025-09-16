@@ -14,11 +14,11 @@ class BrandSeeder extends Seeder
     public function run(): void
     {
         $brands = [
-            ['name' => 'Toyota', 'logo' => 'logos/toyota.png'],
-            ['name' => 'BMW', 'logo' => 'logos/bmw.png'],
-            ['name' => 'Mercedes', 'logo' => 'logos/mercedes.png'],
-            ['name' => 'Tesla', 'logo' => 'logos/tesla.png'],
-            ['name' => 'Renault', 'logo' => 'logos/renault.png'],
+            ['name' => 'Toyota', 'logo' => '/storage/marque_seeder/toyota-logo.png'],
+            ['name' => 'BMW', 'logo' => '/storage/marque_seeder/BMW.svg'],
+            ['name' => 'Mercedes', 'logo' => '/storage/marque_seeder/Mercedes-Logo.png'],
+            ['name' => 'Tesla', 'logo' => '/storage/marque_seeder/Tesla_logo.png'],
+            ['name' => 'Renault', 'logo' => '/storage/marque_seeder/renault.jpg'],
         ];
 
         foreach ($brands as $brand) {

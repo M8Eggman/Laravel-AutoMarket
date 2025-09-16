@@ -25,7 +25,7 @@ export default function Nav() {
 
     return (
         <nav
-            className="flex items-center flex-row justify-between gap-3 lg:gap-4 py-3 bg-white/50 backdrop-blur-sm shadow-md sticky top-0 z-50"
+            className="flex items-center justify-between gap-4 py-3 bg-white/50 backdrop-blur-sm shadow-md sticky top-0 z-50"
             style={{ paddingInline: "max(5vw, 1rem)" }}
         >
             <Link
@@ -56,7 +56,7 @@ export default function Nav() {
                     </Link>
                 </li>
             </ul>
-            <div className="flex gap-2.5 flex-wrap justify-end mt-2 md:mt-0">
+            <div className="flex gap-2.5 flex-wrap justify-end">
                 {auth.user ? (
                     <div className="relative" ref={dropdownRef}>
                         <button
