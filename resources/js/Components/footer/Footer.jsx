@@ -40,24 +40,32 @@ export default function Footer() {
                 <div className="grid md:grid-cols-2 items-center gap-10">
                     <ul className="flex flex-col md:flex-row gap-5">
                         <li>
-                            <Link className="hover:underline">Catalogue</Link>
+                            <Link
+                                href={route("home")}
+                                className="hover:underline"
+                            >
+                                Catalogue
+                            </Link>
                         </li>
                         <li>
-                            <Link className="hover:underline">
+                            <Link
+                                href={route("cars.create")}
+                                className="hover:underline"
+                            >
                                 Vendez votre voiture
                             </Link>
                         </li>
                     </ul>
                     <div className="flex gap-5 text-2xl justify-start md:justify-end">
-                        <Link href="https://github.com" target="_blank">
+                        <a href="https://github.com/M8Eggman">
                             <FaGithub className="hover:text-gray-300 transition-colors duration-300" />
-                        </Link>
-                        <Link href="https://twitter.com" target="_blank">
+                        </a>
+                        <a href="https://twitter.com">
                             <FaTwitter className="hover:text-gray-300 transition-colors duration-300" />
-                        </Link>
-                        <Link href="https://linkedin.com" target="_blank">
+                        </a>
+                        <a href="https://linkedin.com">
                             <FaLinkedin className="hover:text-gray-300 transition-colors duration-300" />
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </div>

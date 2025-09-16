@@ -1,9 +1,27 @@
 import { Link, router, usePage } from "@inertiajs/react";
 import { LuCar } from "react-icons/lu";
 import { GoGear, GoPlus } from "react-icons/go";
+import { useEffect, useRef, useState } from "react";
 
 export default function Nav() {
     const { auth } = usePage().props;
+    const [open, setOpen] = useState(false);
+    const dropdownRef = useRef();
+
+    // Fermer le dropdown si clic à l'extérieur
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     return (
         <nav
@@ -37,24 +55,47 @@ export default function Nav() {
                         Vendez votre voiture
                     </Link>
                 </li>
-                {(auth.can.isAdmin || auth.can.isModo) && (
-                    <li>
-                        <Link className="flex items-center gap-2.5 font-medium hover:text-blue-700 transition-colors duration-300">
-                            <GoGear />
-                            Administration
-                        </Link>
-                    </li>
-                )}
             </ul>
             <div className="flex gap-2.5 flex-wrap mt-2 md:mt-0">
                 {auth.user ? (
-                    <div>
+                    <div className="relative" ref={dropdownRef}>
                         <button
-                            onClick={() => router.post(route("logout"))}
-                            className="py-2 px-4 rounded-lg border border-gray-400 bg-white text-black hover:bg-blue-700 hover:text-white transition-all duration-300"
+                            onClick={() => setOpen(!open)}
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition"
                         >
-                            Se Déconnecter
+                            <span className="font-medium text-gray-800">
+                                {auth.user.first_name}
+                            </span>
+                            <img
+                                src={
+                                    auth.user.avatar?.path
+                                        ? `/storage/${auth.user.avatar.path}`
+                                        : "/storage/default/default-avatar.jpg"
+                                }
+                                alt={auth.user.first_name}
+                                className="w-8 h-8 rounded-full object-cover"
+                            />
                         </button>
+
+                        {open && (
+                            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-50">
+                                {(auth.can.isAdmin || auth.can.isModo) && (
+                                    <Link
+                                        href={route("home")}
+                                        className="flex items-center justify-end w-full gap-2 px-4 py-2 text-gray-800 hover:bg-blue-700 hover:text-white transition"
+                                    >
+                                        <GoGear />
+                                        Administration
+                                    </Link>
+                                )}
+                                <button
+                                    onClick={() => router.post(route("logout"))}
+                                    className="flex items-center justify-end w-full px-4 py-2 text-gray-800 hover:bg-red-500 hover:text-white transition"
+                                >
+                                    Se Déconnecter
+                                </button>
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <>
