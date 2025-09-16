@@ -171,7 +171,6 @@ class CarController extends Controller
 
         return redirect()->route('cars.show', $car->id)
             ->with('success', 'Votre voiture a été ajoutée avec succès !');
-
     }
 
 

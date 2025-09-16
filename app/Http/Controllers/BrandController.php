@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Str;
 
 class BrandController extends Controller
 {
@@ -20,7 +22,7 @@ class BrandController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Brand/Create');
     }
 
     /**
@@ -28,7 +30,33 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255', 'unique:brands,name'],
+            'logo' => ['required', 'image', 'max:5120'],
+        ], [], [
+            'name' => 'nom',
+            'logo' => 'logo',
+        ]);
+
+        $brand = new Brand();
+        $brand->name = $request->name;
+
+        // Upload logo
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $fileName = date('Y_m_d_His') . '_' . uniqid() . '_' . Str::slug($originalName) . '.' . $file->getClientOriginalExtension();
+
+            // Stocke dans public/brands
+            $filePath = $file->storeAs('brands', $fileName, 'public');
+
+            $brand->logo = '/storage/' . $filePath;
+        }
+
+        $brand->save();
+
+        return redirect()->route('administration')
+            ->with('success', 'La marque a été ajoutée avec succès !');
     }
 
     /**
