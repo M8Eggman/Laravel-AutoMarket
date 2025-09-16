@@ -17,4 +17,8 @@ class HomeController extends Controller
         $cars = Car::with(['brand', 'fuel', 'type'])->get();
         return Inertia::render('Home', compact('brands', 'fuels', 'cars'));
     }
+    public function index_admin()
+    {
+        return Inertia::render('Administration');
+    }
 }

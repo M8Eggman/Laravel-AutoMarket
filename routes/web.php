@@ -19,8 +19,11 @@ Route::post('/cars/store', [CarController::class, 'store'])
 Route::delete('/cars/{id}/destroy', [CarController::class, 'destroy'])
     ->name('cars.destroy')
     ->middleware(['auth', 'role:admin,modo']);
-
 Route::get('/cars/{id}/show', [CarController::class, 'show'])->name('cars.show');
+
+Route::get('/administration', [HomeController::class, 'index_admin'])
+    ->name('administration')
+    ->middleware(['auth', 'role:admin,modo']);
 
 // Redirection vers home
 Route::get('/dashboard', function () {
