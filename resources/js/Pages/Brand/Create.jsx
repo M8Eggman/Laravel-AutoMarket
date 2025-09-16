@@ -1,4 +1,4 @@
-import FrontLayout from "@/Layouts/FrontLayout";
+import BackLayout from "@/Layouts/BackLayout";
 import { useForm } from "@inertiajs/react";
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -14,7 +14,7 @@ export default function BrandCreate() {
     }
 
     return (
-        <section className="relative flex flex-col justify-center items-center py-5 gap-5 bg-gray-100">
+        <section className="relative flex flex-col items-center py-5 gap-5 bg-gray-100 min-h-screen">
             <div
                 className="flex flex-col gap-2.5"
                 style={{ width: "min(600px, 90vw)" }}
@@ -88,4 +88,4 @@ export default function BrandCreate() {
     );
 }
 
-BrandCreate.layout = (page) => <FrontLayout>{page}</FrontLayout>;
+BrandCreate.layout = (page) => <BackLayout>{page}</BackLayout>;

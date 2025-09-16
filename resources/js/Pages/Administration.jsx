@@ -41,7 +41,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
     }
 
     return (
-        <section className="relative flex flex-col justify-center items-center py-5 gap-5 bg-gray-100 min-h-screen">
+        <section className="relative flex flex-col items-center py-5 gap-5 bg-gray-100 min-h-screen">
             <div
                 className="flex flex-col gap-5"
                 style={{ width: "min(1400px, 90vw)" }}
@@ -155,7 +155,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                     </button>
                 </div>
 
-                <div className="flex flex-col gap-4 mt-4 bg-white rounded-md p-4">
+                <div className="flex flex-col gap-4 bg-white rounded-md p-4">
                     {sousPage === "utilisateur" && (
                         <>
                             <div className="flex gap-4 sm:gap-2 flex-col sm:flex-row sm:items-center justify-between">
@@ -252,7 +252,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                 <h2 className="text-h4 font-medium">
                                     Gestion des véhicules
                                 </h2>
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 flex-col sm:flex-row">
                                     <input
                                         className="rounded-md w-full sm:w-60"
                                         type="search"
@@ -313,7 +313,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                 <h2 className="text-h4 font-medium">
                                     Gestion des marques
                                 </h2>
-                                <div className="flex gap-2">
+                                <div className="flex gap-2  flex-col sm:flex-row">
                                     <input
                                         className="rounded-md w-full sm:w-60"
                                         type="search"
