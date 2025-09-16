@@ -1,10 +1,11 @@
 import { formatEuro, formatNumber } from "@/utils/format";
-import { Link } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import React from "react";
 import { FaCalendarAlt, FaRoad, FaGasPump, FaCogs } from "react-icons/fa";
 
+export default function Card({ car, deleteCar }) {
+    const { auth } = usePage().props;
 
-export default function Card({ car }) {
     return (
         <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="relative">
@@ -13,9 +14,17 @@ export default function Card({ car }) {
                     alt={car.model}
                     className="w-full h-60 object-cover"
                 />
-                <span className="bg-gray-200 text-gray-800 text-sm font-medium px-3 py-1 rounded-full absolute top-3 left-3">
+                <span className="bg-gray-200 text-gray-800 text-sm-custom font-medium px-3 py-1 rounded-full absolute top-3 left-3">
                     {car.brand?.name}
                 </span>
+                {(auth.can.isAdmin || auth.can.isModo) && (
+                    <button
+                        className="absolute top-3 right-3 bg-red-600/75 hover:bg-red-700 text-white font-semibold text-sm-custom px-4 py-2  rounded-lg shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400"
+                        onClick={() => deleteCar(car.id)}
+                    >
+                        Supprimer
+                    </button>
+                )}
             </div>
             <div className="p-4 flex flex-col gap-2">
                 <h4 className="font-semibold text-h6">

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -33,6 +34,11 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+                'can' => [
+                    'isAdmin' => $request->user() ? $request->user()->can('is-admin') : false,
+                    'isModo' => $request->user() ? $request->user()->can('is-modo') : false,
+                    'isUser' => $request->user() ? $request->user()->can('is-user') : false,
+                ],
             ],
         ];
     }

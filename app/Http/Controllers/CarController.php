@@ -11,6 +11,7 @@ use App\Models\Jante;
 use App\Models\Sellerie;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Str;
@@ -136,7 +137,7 @@ class CarController extends Controller
                 $fileName = date('Y_m_d_His') . '_' . uniqid() . '_' . Str::slug($originalName) . '.' . $file->getClientOriginalExtension();
 
                 // Stocke l'image dans public/voiture
-                $filePath = $file->storeAs('voiture', $fileName, 'public');
+                $filePath = $file->storeAs('voitures', $fileName, 'public');
 
                 $car->$field = '/storage/' . $filePath;
             }
@@ -231,6 +232,23 @@ class CarController extends Controller
      */
     public function destroy($id)
     {
+        $car = car::findOrFail($id);
 
+        foreach (range(1, 4) as $i) {
+            $field = "image{$i}_path";
+            // supprimer l’ancienne image si elle existe
+            if ($car->$field) {
+                // vérifie que le fichier est bien dans voitures avant de le supprimer sinon ça supprimait l'image utilisé par le seeder
+                if (Str::startsWith($car->$field, 'voitures/')) {
+                    // enlève /storage/ du path puis supprime l'image
+                    $relativePath = str_replace('/storage/', '', $car->$field);
+                    Storage::disk('public')->delete($relativePath);
+                }
+            }
+        }
+        $car->delete();
+
+        return redirect()->route('home')
+            ->with('success', 'Voiture supprimées avec succès !');
     }
 }

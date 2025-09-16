@@ -1,14 +1,19 @@
 import Card from "@/Components/carCard/card";
 import FrontLayout from "@/Layouts/FrontLayout";
+import { router, usePage } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
 export default function Home({ brands, fuels, cars }) {
+    // Variable pour les filtres
     const [filteredCars, setFilteredCars] = useState(cars);
     const [brandFilter, setBrandFilter] = useState("all");
     const [fuelFilter, setFuelFilter] = useState("all");
     const [etatFilter, setEtatFilter] = useState("all");
     const [searchFilter, setSearchFilter] = useState("");
 
+    const { flash } = usePage().props;
+
+    //Filtre a chaque changement de filtre
     useEffect(() => {
         let filtered = cars;
 
@@ -41,11 +46,17 @@ export default function Home({ brands, fuels, cars }) {
         setFilteredCars(filtered);
     }, [brandFilter, fuelFilter, searchFilter, etatFilter, cars]);
 
+    // Reset tout les filtre
     function resetFilter() {
         setEtatFilter("all");
         setBrandFilter("all");
         setFuelFilter("all");
         setSearchFilter("");
+    }
+
+    function deleteCar(id) {
+        setFilteredCars((c) => c.filter((car) => car.id !== id));
+        router.delete(route("cars.destroy", id));
     }
 
     return (
@@ -170,12 +181,17 @@ export default function Home({ brands, fuels, cars }) {
                     </button>
                 </div>
                 <div className="flex flex-col gap-2.5 flex-grow w-full">
+                    {flash?.success && (
+                        <div className="fixed top-5 left-1/2 -translate-x-1/2 bg-green-500 text-white px-5 py-3 rounded shadow-md z-50">
+                            {flash.success}
+                        </div>
+                    )}
                     <h3 className="text-h5 font-medium">
                         {filteredCars.length} véhicules disponible
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredCars.map((el) => (
-                            <Card key={el.id} car={el} />
+                            <Card key={el.id} car={el} deleteCar={deleteCar} />
                         ))}
                     </div>
                     <button

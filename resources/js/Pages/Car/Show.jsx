@@ -1,11 +1,12 @@
 import CarImageCarousel from "@/Components/carousel/carousel";
 import FrontLayout from "@/Layouts/FrontLayout";
 import { formatEuro, formatPercent } from "@/utils/format";
+import { router } from "@inertiajs/react";
 import { FaCalendarAlt, FaRoad, FaGasPump, FaCogs } from "react-icons/fa";
 import { GoMail } from "react-icons/go";
 import { LuCalculator } from "react-icons/lu";
 
-export default function CarShow({ car, financement, flash }) {
+export default function CarShow({ car, financement, flash, auth }) {
     return (
         <section className="flex justify-center py-10 bg-gray-100">
             <div
@@ -33,13 +34,27 @@ export default function CarShow({ car, financement, flash }) {
                     </div>
                     <div className="bg-white rounded-lg shadow-md px-7 py-5">
                         <div className="flex flex-col gap-5 border-b pb-5">
-                            <div>
-                                <h1 className="font-semibold text-h4">
-                                    {car.brand?.name} {car.model}
-                                </h1>
-                                <p className="text-blue-800 font-bold text-h3">
-                                    {car.prix.toLocaleString()} €
-                                </p>
+                            <div className="flex items-start justify-between">
+                                <div>
+                                    <h1 className="font-semibold text-h4">
+                                        {car.brand?.name} {car.model}
+                                    </h1>
+                                    <p className="text-blue-800 font-bold text-h3">
+                                        {car.prix.toLocaleString()} €
+                                    </p>
+                                </div>
+                                {(auth.can.isAdmin || auth.can.isModo) && (
+                                    <button
+                                        className="bg-red-600 hover:bg-red-700 text-white font-semibold text-sm-custom px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400"
+                                        onClick={() =>
+                                            router.delete(
+                                                route("cars.destroy", car.id)
+                                            )
+                                        }
+                                    >
+                                        Supprimer
+                                    </button>
+                                )}
                             </div>
                             <div className="flex justify-between gap-5 text-gray-600 font-medium text-m-custom flex-wrap">
                                 <span className="flex items-center gap-2">
