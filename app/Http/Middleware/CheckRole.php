@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
@@ -22,7 +23,7 @@ class CheckRole
         // Vérifie si le user et contenu dans l'array ou si il est connécté
         if (!$user || !in_array($user->role->name, $roles)) {
             // Redirige vers la page home
-            return redirect()->route('home');
+            return Inertia::location(route("home"));
         }
 
         return $next($request);

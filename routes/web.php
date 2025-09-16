@@ -18,7 +18,7 @@ Route::post('/cars/store', [CarController::class, 'store'])
     ->middleware('auth');
 Route::post('/cars/{id}/destroy', [CarController::class, 'destroy'])
     ->name('cars.destroy')
-    ->middleware('auth');
+    ->middleware(['auth', 'role:admin,modo']);
 
 Route::get('/cars/{id}/show', [CarController::class, 'show'])->name('cars.show');
 
