@@ -37,12 +37,14 @@ export default function Nav() {
                         Vendez votre voiture
                     </Link>
                 </li>
-                <li>
-                    <Link className="flex items-center gap-2.5 font-medium hover:text-blue-700 transition-colors duration-300">
-                        <GoGear />
-                        Administration
-                    </Link>
-                </li>
+                {(auth.can.isAdmin || auth.can.isModo) && (
+                    <li>
+                        <Link className="flex items-center gap-2.5 font-medium hover:text-blue-700 transition-colors duration-300">
+                            <GoGear />
+                            Administration
+                        </Link>
+                    </li>
+                )}
             </ul>
             <div className="flex gap-2.5 flex-wrap mt-2 md:mt-0">
                 {auth.user ? (

@@ -186,6 +186,11 @@ export default function Home({ brands, fuels, cars }) {
                             {flash.success}
                         </div>
                     )}
+                    {flash?.error && (
+                        <div className="fixed top-5 left-1/2 -translate-x-1/2 bg-red-500 text-white px-5 py-3 rounded shadow-lg z-50 animate-shake">
+                            {flash.error}
+                        </div>
+                    )}
                     <h3 className="text-h5 font-medium">
                         {filteredCars.length} véhicules disponible
                     </h3>

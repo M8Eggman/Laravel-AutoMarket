@@ -11,6 +11,7 @@ use App\Models\Jante;
 use App\Models\Sellerie;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -233,6 +234,11 @@ class CarController extends Controller
     public function destroy($id)
     {
         $car = car::findOrFail($id);
+
+        if (!Gate::any(['is-admin', 'is-modo'])) {
+            redirect()->route('home')
+                ->with('error', "Vous n'avez pas les droits !");
+        }
 
         foreach (range(1, 4) as $i) {
             $field = "image{$i}_path";
