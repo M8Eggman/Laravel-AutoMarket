@@ -1,5 +1,6 @@
 import BackLayout from "@/Layouts/BackLayout";
 import { formatEuro, formatNumber } from "@/utils/format";
+import { Link, router } from "@inertiajs/react";
 import { useState } from "react";
 import { FaArrowLeft, FaTrash } from "react-icons/fa";
 import {
@@ -11,10 +12,27 @@ import {
 } from "react-icons/fa";
 
 export default function Administration({ auth, users, cars, brands, roles }) {
-    const [sousPage, setSousPage] = useState("utilisateur");
+    // Variable choix de la sous page
+    const [sousPage, setSousPage] = useState(
+        auth?.can.isAdmin ? "utilisateur" : "voiture"
+    );
+
+    // Variable local de users et cars pour un effet instantané de suppression
+    const [localCars, setLocalCars] = useState(cars);
+    const [localUsers, setLocalUsers] = useState(users);
+
+    function handleCarDelete(id) {
+        setLocalCars((c) => c.filter((car) => car.id !== id));
+        router.delete(route("cars.destroy", id));
+    }
+
+    function handleUserDelete(id) {
+        setLocalUsers((u) => u.filter((user) => user.id !== id));
+        router.delete(route("users.destroy", id));
+    }
 
     return (
-        <section className="relative flex flex-col justify-center items-center py-5 gap-5 bg-gray-100">
+        <section className="relative flex flex-col justify-center items-center py-5 gap-5 bg-gray-100 min-h-screen">
             <div
                 className="flex flex-col gap-5"
                 style={{ width: "min(1400px, 90vw)" }}
@@ -48,7 +66,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                             Utilisateurs
                         </p>
                         <p className="text-xl-custom font-bold">
-                            {users.length}
+                            {localUsers.length}
                         </p>
                         <p className="text-sm-custom text-gray-500">
                             Total des inscrits
@@ -62,7 +80,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                         />
                         <p className="text-m-custom text-gray-500">Véhicules</p>
                         <p className="text-xl-custom font-bold">
-                            {cars.length}
+                            {localCars.length}
                         </p>
                         <p className="text-sm-custom text-gray-500">
                             Total des annonces
@@ -76,7 +94,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                         />
                         <p className="text-m-custom text-gray-500">Actives</p>
                         <p className="text-xl-custom font-bold">
-                            {Math.round(cars.length * 0.8)}
+                            {localCars.length}
                         </p>
                         <p className="text-sm-custom text-gray-500">
                             Annonces en ligne
@@ -98,14 +116,16 @@ export default function Administration({ auth, users, cars, brands, roles }) {
 
                 {/* Navigation sous-page */}
                 <div className="flex me-auto flex-wrap justify-center gap-2 bg-gray-300 rounded-md p-1">
-                    <button
-                        onClick={() => setSousPage("utilisateur")}
-                        className={`flex items-center gap-1 px-2 py-1 text-sm-custom rounded ${
-                            sousPage === "utilisateur" ? "bg-white" : ""
-                        }`}
-                    >
-                        <FaUsers /> Utilisateurs
-                    </button>
+                    {auth.can.isAdmin && (
+                        <button
+                            onClick={() => setSousPage("utilisateur")}
+                            className={`flex items-center gap-1 px-2 py-1 text-sm-custom rounded ${
+                                sousPage === "utilisateur" ? "bg-white" : ""
+                            }`}
+                        >
+                            <FaUsers /> Utilisateurs
+                        </button>
+                    )}
 
                     <button
                         onClick={() => setSousPage("voiture")}
@@ -141,7 +161,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                     placeholder="Rechercher un utilisateur ..."
                                 />
                             </div>
-                            {users.map((user) => (
+                            {localUsers.map((user) => (
                                 <div
                                     key={user.id}
                                     className="flex flex-col gap-4 sm:flex-row justify-between items-center p-4 bg-white rounded shadow"
@@ -174,16 +194,36 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                     </div>
 
                                     <div className="flex gap-2">
-                                        <select className="border rounded ps-2 py-1">
-                                            {roles.map((r) => (
-                                                <option key={r.id} value={r.id}>
-                                                    {r.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <button className="flex items-center gap-1 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition">
-                                            <FaTrash /> Supprimer
-                                        </button>
+                                        {user.id !==
+                                            users.find(
+                                                (u) => u.role !== "admin"
+                                            ).id && (
+                                            <>
+                                                <select
+                                                    className="border rounded ps-2 py-1"
+                                                    value={user.role_id}
+                                                >
+                                                    {roles.map((r) => (
+                                                        <option
+                                                            key={r.id}
+                                                            value={r.id}
+                                                        >
+                                                            {r.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <button
+                                                    className="flex items-center gap-1 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition"
+                                                    onClick={() =>
+                                                        handleUserDelete(
+                                                            user.id
+                                                        )
+                                                    }
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -197,13 +237,21 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                 <h2 className="text-h4 font-medium">
                                     Gestion des véhicules
                                 </h2>
-                                <input
-                                    className="rounded-md w-full sm:w-60"
-                                    type="search"
-                                    placeholder="Rechercher une voiture ..."
-                                />
+                                <div className="flex gap-2">
+                                    <input
+                                        className="rounded-md w-full sm:w-60"
+                                        type="search"
+                                        placeholder="Rechercher une voiture ..."
+                                    />
+                                    <Link
+                                        className="text-white text-m-custom bg-blue-700 hover:bg-blue-900 px-5 py-2 rounded-md transition"
+                                        href={route("cars.create")}
+                                    >
+                                        + Créer une voiture
+                                    </Link>
+                                </div>
                             </div>
-                            {cars.map((car) => (
+                            {localCars.map((car) => (
                                 <div
                                     key={car.id}
                                     className="flex justify-between items-center p-4 bg-white rounded shadow"
@@ -232,8 +280,11 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                             </p>
                                         </div>
                                     </div>
-                                    <button className="flex items-center gap-1 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition">
-                                        <FaTrash /> 
+                                    <button
+                                        className="flex items-center gap-1 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition"
+                                        onClick={() => handleCarDelete(car.id)}
+                                    >
+                                        <FaTrash />
                                     </button>
                                 </div>
                             ))}
@@ -247,11 +298,19 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                 <h2 className="text-h4 font-medium">
                                     Gestion des marques
                                 </h2>
-                                <input
-                                    className="rounded-md w-full sm:w-60"
-                                    type="search"
-                                    placeholder="Rechercher une marque ..."
-                                />
+                                <div className="flex gap-2">
+                                    <input
+                                        className="rounded-md w-full sm:w-60"
+                                        type="search"
+                                        placeholder="Rechercher une marque ..."
+                                    />
+                                    <Link
+                                        className="text-white text-m-custom bg-blue-700 hover:bg-blue-900 px-5 py-2 rounded-md transition"
+                                        href={route("brands.create")}
+                                    >
+                                        + Créer une marque
+                                    </Link>
+                                </div>
                             </div>
                             {brands.map((brand) => (
                                 <div
@@ -271,20 +330,10 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                                 {brand.name}
                                             </p>
                                             <p className="text-gray-500">
-                                                {
-                                                    cars.filter(
-                                                        (c) =>
-                                                            c.brand_id ===
-                                                            brand.id
-                                                    ).length
-                                                }{" "}
-                                                véhicule(s)
+                                                {brand.cars?.length} véhicule(s)
                                             </p>
                                         </div>
                                     </div>
-                                    <button className="flex items-center gap-1 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition">
-                                        <FaTrash /> 
-                                    </button>
                                 </div>
                             ))}
                         </>

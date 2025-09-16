@@ -21,8 +21,8 @@ class HomeController extends Controller
     }
     public function index_admin()
     {
-        $users = User::with(['cars'])->get();
-        $brands = Brand::all();
+        $users = User::with(['cars', 'role'])->get();
+        $brands = Brand::with(['cars'])->get();
         $roles = Role::all();
         $cars = Car::with(['brand', 'fuel', 'type'])->get();
         return Inertia::render('Administration', compact("users", "brands", "cars", "roles"));

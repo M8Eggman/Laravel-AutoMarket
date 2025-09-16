@@ -254,7 +254,7 @@ class CarController extends Controller
         }
         $car->delete();
 
-        return redirect()->route('home')
+        return redirect()->back()
             ->with('success', 'Voiture supprimées avec succès !');
     }
 }
