@@ -5,7 +5,9 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Mail\DemoMail;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -42,6 +44,13 @@ Route::put('/users/{id}/change_role', [UserController::class, 'change_role'])
 Route::get('/administration', [HomeController::class, 'index_admin'])
     ->name('administration')
     ->middleware(['auth', 'role:admin,modo']);
+
+// route mail
+Route::get('/mail-test', function () {
+    Mail::to("gonearraphael@gmail.com")->send(new DemoMail());
+    return 'Mail envoyé.';
+})->name('mail')->middleware('auth');
+// si on veut etre dynamique faut mettre Auth::user()->email dans to()
 
 // Redirection vers home
 Route::get('/dashboard', function () {

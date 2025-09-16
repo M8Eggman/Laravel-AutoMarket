@@ -129,7 +129,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                         />
                         <p className="text-m-custom text-gray-500">Véhicules</p>
                         <p className="text-xl-custom font-bold">
-                            {localCars.length}
+                            {cars.length}
                         </p>
                         <p className="text-sm-custom text-gray-500">
                             Total des annonces
@@ -143,7 +143,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                         />
                         <p className="text-m-custom text-gray-500">Actives</p>
                         <p className="text-xl-custom font-bold">
-                            {localCars.length}
+                            {cars.length}
                         </p>
                         <p className="text-sm-custom text-gray-500">
                             Annonces en ligne

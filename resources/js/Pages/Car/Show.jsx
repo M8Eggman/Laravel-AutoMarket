@@ -1,7 +1,7 @@
 import CarImageCarousel from "@/Components/carousel/carousel";
 import FrontLayout from "@/Layouts/FrontLayout";
 import { formatEuro, formatPercent } from "@/utils/format";
-import { router } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { FaCalendarAlt, FaRoad, FaGasPump, FaCogs } from "react-icons/fa";
 import { GoMail } from "react-icons/go";
 import { LuCalculator } from "react-icons/lu";
@@ -161,9 +161,12 @@ export default function CarShow({ car, financement, flash, auth }) {
                         <p className="font-medium text-m-custom">
                             {car.user.first_name} {car.user.last_name}
                         </p>
-                        <button className="flex items-center justify-center gap-2 bg-blue-700 text-white py-2 px-5 rounded hover:bg-blue-900 transition">
+                        <Link
+                            href={route("mail")}
+                            className="flex items-center justify-center gap-2 bg-blue-700 text-white py-2 px-5 rounded hover:bg-blue-900 transition"
+                        >
                             <GoMail /> Contacter le vendeur
-                        </button>
+                        </Link>
                         <small className="text-xs-custom text-gray-500">
                             Connectez-vous pour contacter le vendeur
                         </small>
