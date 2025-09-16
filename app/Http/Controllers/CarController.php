@@ -236,7 +236,7 @@ class CarController extends Controller
         $car = car::findOrFail($id);
 
         if (!Gate::any(['is-admin', 'is-modo'])) {
-            redirect()->route('home')
+            return redirect()->route('home')
                 ->with('error', "Vous n'avez pas les droits !");
         }
 
@@ -244,10 +244,11 @@ class CarController extends Controller
             $field = "image{$i}_path";
             // supprimer l’ancienne image si elle existe
             if ($car->$field) {
+                // enlève /storage/ du path puis supprime l'image
+                $relativePath = str_replace('/storage/', '', $car->$field);
+
                 // vérifie que le fichier est bien dans voitures avant de le supprimer sinon ça supprimait l'image utilisé par le seeder
-                if (Str::startsWith($car->$field, 'voitures/')) {
-                    // enlève /storage/ du path puis supprime l'image
-                    $relativePath = str_replace('/storage/', '', $car->$field);
+                if (Str::startsWith($relativePath, 'voitures/')) {
                     Storage::disk('public')->delete($relativePath);
                 }
             }
