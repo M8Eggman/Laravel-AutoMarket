@@ -53,7 +53,7 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate des entrée
+        // Validate des entrée et donne des noms différent pour afficher les erreurs
         $request->validate([
             'model' => ['required', 'string', 'max:255'],
             'etat' => ['required', 'in:Neuf,Occasion'],
@@ -210,8 +210,8 @@ class CarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Car $car)
+    public function destroy($id)
     {
-        //
+        
     }
 }

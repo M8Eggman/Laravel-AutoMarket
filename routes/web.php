@@ -16,7 +16,10 @@ Route::get('/cars/create', [CarController::class, 'create'])
 Route::post('/cars/store', [CarController::class, 'store'])
     ->name('cars.store')
     ->middleware('auth');
-    
+Route::post('/cars/{id}/destroy', [CarController::class, 'destroy'])
+    ->name('cars.destroy')
+    ->middleware('auth');
+
 Route::get('/cars/{id}/show', [CarController::class, 'show'])->name('cars.show');
 
 // Redirection vers home
