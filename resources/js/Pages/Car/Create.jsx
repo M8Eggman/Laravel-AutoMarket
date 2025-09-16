@@ -34,7 +34,7 @@ export default function CarCreate({
     });
 
     useEffect(() => {
-        if (fuels.find((f) => f.id === data.fuel_id) === "Electrique") {
+        if (fuels.find((f) => f.id === data.fuel_id)?.name === "Electrique") {
             setData(
                 "cylindree_id",
                 cylindrees.find((c) => c.size === "NONE")?.id ?? null
@@ -84,6 +84,7 @@ export default function CarCreate({
                         <input
                             type="text"
                             id="model"
+                            placeholder="Ex : Renault Clio"
                             value={data.model}
                             onChange={(e) => setData("model", e.target.value)}
                             className={`border rounded-md px-3 py-2 ${
@@ -106,7 +107,9 @@ export default function CarCreate({
                             id="etat"
                             value={data.etat}
                             onChange={(e) => setData("etat", e.target.value)}
-                            className="border rounded-md px-3 py-2"
+                            className={`border rounded-md px-3 py-2 ${
+                                errors.etat ? "border-red-500" : ""
+                            }`}
                         >
                             <option value="">
                                 Choisissez un état de la voiture
@@ -129,10 +132,18 @@ export default function CarCreate({
                         <input
                             type="number"
                             id="annee"
+                            placeholder="Ex : 2021"
                             value={data.annee}
                             onChange={(e) => setData("annee", e.target.value)}
-                            className="border rounded-md px-3 py-2"
+                            className={`border rounded-md px-3 py-2 ${
+                                errors.annee ? "border-red-500" : ""
+                            }`}
                         />
+                        {errors.annee && (
+                            <small className="text-red-600">
+                                {errors.annee}
+                            </small>
+                        )}
                     </div>
 
                     {/* Kilométrage */}
@@ -148,25 +159,22 @@ export default function CarCreate({
                             <input
                                 type="number"
                                 id="kilometrage"
+                                placeholder="Ex : 15000"
                                 value={data.kilometrage}
                                 onChange={(e) =>
                                     setData("kilometrage", e.target.value)
                                 }
-                                className="border rounded-md px-3 py-2"
+                                className={`border rounded-md px-3 py-2 ${
+                                    errors.kilometrage ? "border-red-500" : ""
+                                }`}
                             />
+                            {errors.kilometrage && (
+                                <small className="text-red-600">
+                                    {errors.kilometrage}
+                                </small>
+                            )}
                         </div>
                     )}
-
-                    {/* ABS */}
-                    <div className="flex items-center gap-2">
-                        <input
-                            type="checkbox"
-                            id="abs"
-                            checked={data.abs}
-                            onChange={(e) => setData("abs", e.target.checked)}
-                        />
-                        <label htmlFor="abs">ABS</label>
-                    </div>
 
                     {/* Prix */}
                     <div className="flex flex-col">
@@ -176,10 +184,18 @@ export default function CarCreate({
                         <input
                             type="number"
                             id="prix"
+                            placeholder="Ex : 12000"
                             value={data.prix}
                             onChange={(e) => setData("prix", e.target.value)}
-                            className="border rounded-md px-3 py-2"
+                            className={`border rounded-md px-3 py-2 ${
+                                errors.prix ? "border-red-500" : ""
+                            }`}
                         />
+                        {errors.prix && (
+                            <small className="text-red-600">
+                                {errors.prix}
+                            </small>
+                        )}
                     </div>
 
                     {/* Description */}
@@ -193,12 +209,20 @@ export default function CarCreate({
                         <textarea
                             id="description"
                             rows="4"
+                            placeholder="Ex : Voiture en excellent état, révisée, 1 propriétaire"
                             value={data.description}
                             onChange={(e) =>
                                 setData("description", e.target.value)
                             }
-                            className="border rounded-md px-3 py-2"
+                            className={`border rounded-md px-3 py-2 ${
+                                errors.description ? "border-red-500" : ""
+                            }`}
                         />
+                        {errors.description && (
+                            <small className="text-red-600">
+                                {errors.description}
+                            </small>
+                        )}
                     </div>
 
                     {/* Images */}
@@ -219,8 +243,17 @@ export default function CarCreate({
                                 onChange={(e) =>
                                     setData(`image${i}_path`, e.target.files[0])
                                 }
-                                className="border rounded-md px-3 py-2"
+                                className={`border rounded-md px-3 py-2 ${
+                                    errors[`image${i}_path`]
+                                        ? "border-red-500"
+                                        : ""
+                                }`}
                             />
+                            {errors[`image${i}_path`] && (
+                                <small className="text-red-600">
+                                    {errors[`image${i}_path`]}
+                                </small>
+                            )}
                         </div>
                     ))}
 
@@ -240,7 +273,9 @@ export default function CarCreate({
                                 onChange={(e) =>
                                     setData("brand_id", e.target.value)
                                 }
-                                className="border rounded-md px-3 py-2"
+                                className={`border rounded-md px-3 py-2 ${
+                                    errors.brand_id ? "border-red-500" : ""
+                                }`}
                             >
                                 <option value="">Choisir une marque</option>
                                 {brands.map((brand) => (
@@ -271,7 +306,9 @@ export default function CarCreate({
                                 onChange={(e) =>
                                     setData("fuel_id", e.target.value)
                                 }
-                                className="border rounded-md px-3 py-2"
+                                className={`border rounded-md px-3 py-2 ${
+                                    errors.fuel_id ? "border-red-500" : ""
+                                }`}
                             >
                                 <option value="">Choisir un carburant</option>
                                 {fuels.map((fuel) => (
@@ -301,7 +338,9 @@ export default function CarCreate({
                                 onChange={(e) =>
                                     setData("jante_id", e.target.value)
                                 }
-                                className="border rounded-md px-3 py-2"
+                                className={`border rounded-md px-3 py-2 ${
+                                    errors.jante_id ? "border-red-500" : ""
+                                }`}
                             >
                                 <option value="">Choisir des jantes</option>
                                 {jantes.map((jante) => (
@@ -331,7 +370,9 @@ export default function CarCreate({
                                 onChange={(e) =>
                                     setData("sellerie_id", e.target.value)
                                 }
-                                className="border rounded-md px-3 py-2"
+                                className={`border rounded-md px-3 py-2 ${
+                                    errors.sellerie_id ? "border-red-500" : ""
+                                }`}
                             >
                                 <option value="">Choisir une sellerie</option>
                                 {selleries.map((sellerie) => (
@@ -364,7 +405,9 @@ export default function CarCreate({
                                 onChange={(e) =>
                                     setData("color_id", e.target.value)
                                 }
-                                className="border rounded-md px-3 py-2"
+                                className={`border rounded-md px-3 py-2 ${
+                                    errors.color_id ? "border-red-500" : ""
+                                }`}
                             >
                                 <option value="">Choisir une couleur</option>
                                 {colors.map((color) => (
@@ -394,7 +437,9 @@ export default function CarCreate({
                                 onChange={(e) =>
                                     setData("type_id", e.target.value)
                                 }
-                                className="border rounded-md px-3 py-2"
+                                className={`border rounded-md px-3 py-2 ${
+                                    errors.type_id ? "border-red-500" : ""
+                                }`}
                             >
                                 <option value="">Choisir un type</option>
                                 {types.map((type) => (
@@ -426,7 +471,11 @@ export default function CarCreate({
                                     onChange={(e) =>
                                         setData("cylindree_id", e.target.value)
                                     }
-                                    className="border rounded-md px-3 py-2"
+                                    className={`border rounded-md px-3 py-2 ${
+                                        errors.cylindree_id
+                                            ? "border-red-500"
+                                            : ""
+                                    }`}
                                 >
                                     <option value="">
                                         Choisir une cylindrée
