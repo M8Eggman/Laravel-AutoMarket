@@ -70,7 +70,7 @@ export default function Nav() {
                                 <img
                                     src={
                                         auth.user.avatar?.path
-                                            ? `/storage/${auth.user.avatar.path}`
+                                            ? auth.user.avatar.path
                                             : "/storage/default/default-avatar.jpg"
                                     }
                                     alt=""

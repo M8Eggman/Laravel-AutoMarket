@@ -181,6 +181,29 @@ export default function Register() {
                             />
                         </div>
 
+                        <div className="mt-4">
+                            <InputLabel
+                                htmlFor="avatar"
+                                value="Avatar (optionnel)"
+                            />
+
+                            <input
+                                id="avatar"
+                                type="file"
+                                name="avatar"
+                                accept="image/*"
+                                className="mt-1 block w-full border rounded-md px-3 py-2"
+                                onChange={(e) =>
+                                    setData("avatar", e.target.files[0])
+                                }
+                            />
+
+                            <InputError
+                                message={errors.avatar}
+                                className="mt-2"
+                            />
+                        </div>
+
                         <div className="mt-4 flex items-center justify-between">
                             <Link
                                 href={route("login")}
