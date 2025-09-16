@@ -1,7 +1,7 @@
 import BackLayout from "@/Layouts/BackLayout";
 import { formatEuro, formatNumber } from "@/utils/format";
 import { Link, router } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowLeft, FaEye, FaTrash } from "react-icons/fa";
 import {
     FaUsers,
@@ -16,10 +16,50 @@ export default function Administration({ auth, users, cars, brands, roles }) {
     const [sousPage, setSousPage] = useState(
         auth?.can.isAdmin ? "utilisateur" : "voiture"
     );
+    const [searchFilter, setSearchFilter] = useState("");
 
     // Variable local de users et cars pour un effet instantané de suppression
     const [localCars, setLocalCars] = useState(cars);
     const [localUsers, setLocalUsers] = useState(users);
+    const [filteredBrands, setFilteredBrands] = useState(brands);
+
+    useEffect(() => {
+        if (sousPage === "utilisateur") {
+            const filtered = users.filter((user) =>
+                `${user.first_name} ${user.last_name}`
+                    .toLowerCase()
+                    .includes(searchFilter.toLowerCase())
+            );
+            setLocalUsers(filtered);
+        }
+
+        if (sousPage === "voiture") {
+            const filtered = cars.filter((car) => {
+                const filterLower = searchFilter.toLowerCase().trim();
+                return (
+                    car.model.toLowerCase().includes(filterLower) ||
+                    car.brand?.name.toLowerCase().includes(filterLower) ||
+                    car.fuel?.name.toLowerCase().includes(filterLower) ||
+                    car.type?.name.toLowerCase().includes(filterLower) ||
+                    car.etat.toLowerCase().includes(filterLower) ||
+                    car.annee.toString().includes(filterLower)
+                );
+            });
+            setLocalCars(filtered);
+        }
+
+        if (sousPage === "marque") {
+            const filtered = brands.filter((brand) =>
+                brand.name.toLowerCase().includes(searchFilter.toLowerCase())
+            );
+            setFilteredBrands(filtered);
+        }
+    }, [searchFilter, sousPage, users, cars, brands]);
+
+    // reset search quand on change de sous-page
+    useEffect(() => {
+        setSearchFilter("");
+    }, [sousPage]);
 
     function handleCarDelete(id) {
         setLocalCars((c) => c.filter((car) => car.id !== id));
@@ -165,6 +205,10 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                 <input
                                     className="rounded-md w-full sm:w-60"
                                     type="search"
+                                    value={searchFilter}
+                                    onChange={(e) =>
+                                        setSearchFilter(e.target.value)
+                                    }
                                     name=""
                                     id=""
                                     placeholder="Rechercher un utilisateur ..."
@@ -256,6 +300,10 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                     <input
                                         className="rounded-md w-full sm:w-60"
                                         type="search"
+                                        value={searchFilter}
+                                        onChange={(e) =>
+                                            setSearchFilter(e.target.value)
+                                        }
                                         placeholder="Rechercher une voiture ..."
                                     />
                                     <Link
@@ -327,6 +375,10 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                     <input
                                         className="rounded-md w-full sm:w-60"
                                         type="search"
+                                        value={searchFilter}
+                                        onChange={(e) =>
+                                            setSearchFilter(e.target.value)
+                                        }
                                         placeholder="Rechercher une marque ..."
                                     />
                                     <Link
@@ -337,7 +389,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                     </Link>
                                 </div>
                             </div>
-                            {brands.map((brand) => (
+                            {filteredBrands.map((brand) => (
                                 <div
                                     key={brand.id}
                                     className="flex justify-between items-center p-4 bg-white rounded shadow"
