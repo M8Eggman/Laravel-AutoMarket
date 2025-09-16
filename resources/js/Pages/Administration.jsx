@@ -2,7 +2,7 @@ import BackLayout from "@/Layouts/BackLayout";
 import { formatEuro, formatNumber } from "@/utils/format";
 import { Link, router } from "@inertiajs/react";
 import { useState } from "react";
-import { FaArrowLeft, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaEye, FaTrash } from "react-icons/fa";
 import {
     FaUsers,
     FaCar,
@@ -295,12 +295,22 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                             </p>
                                         </div>
                                     </div>
-                                    <button
-                                        className="flex items-center gap-1 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition"
-                                        onClick={() => handleCarDelete(car.id)}
-                                    >
-                                        <FaTrash />
-                                    </button>
+                                    <div className="flex gap-2">
+                                        <Link
+                                            href={route("cars.show", car.id)}
+                                            className="flex items-center gap-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition"
+                                        >
+                                            <FaEye />
+                                        </Link>
+                                        <button
+                                            className="flex items-center gap-1 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition"
+                                            onClick={() =>
+                                                handleCarDelete(car.id)
+                                            }
+                                        >
+                                            <FaTrash />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </>
