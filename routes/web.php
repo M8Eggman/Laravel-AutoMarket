@@ -34,6 +34,9 @@ Route::post('/brands/store', [BrandController::class, 'store'])
 Route::delete('/users/{id}/destroy', [UserController::class, 'destroy'])
     ->name('users.destroy')
     ->middleware(['auth', 'role:admin']);
+Route::put('/users/{id}/change_role', [UserController::class, 'change_role'])
+    ->name('users.change_role')
+    ->middleware(['auth', 'role:admin']);
 
 // route administration
 Route::get('/administration', [HomeController::class, 'index_admin'])

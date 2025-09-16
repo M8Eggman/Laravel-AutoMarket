@@ -31,6 +31,15 @@ export default function Administration({ auth, users, cars, brands, roles }) {
         router.delete(route("users.destroy", id));
     }
 
+    function handleChangeRole(userId, newRoleId) {
+        setLocalUsers((u) =>
+            u.map((user) =>
+                user.id === userId ? { ...user, role_id: newRoleId } : user
+            )
+        );
+        router.put(route("users.change_role", userId), { role_id: newRoleId });
+    }
+
     return (
         <section className="relative flex flex-col justify-center items-center py-5 gap-5 bg-gray-100 min-h-screen">
             <div
@@ -202,6 +211,12 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                                 <select
                                                     className="border rounded ps-2 py-1"
                                                     value={user.role_id}
+                                                    onChange={(e) =>
+                                                        handleChangeRole(
+                                                            user.id,
+                                                            e.target.value
+                                                        )
+                                                    }
                                                 >
                                                     {roles.map((r) => (
                                                         <option

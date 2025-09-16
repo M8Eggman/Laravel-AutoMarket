@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -10,6 +11,32 @@ use Str;
 
 class UserController extends Controller
 {
+    public function change_role(Request $request, $id)
+    {
+        $request->validate([
+            'role_id' => 'required|exists:roles,id',
+        ], [], [
+            'role_id' => 'rôle',
+        ]);
+
+        // Vérifie si l'utilisateur connecté est admin
+        if (!Gate::allows('is-admin')) {
+            return redirect()->back()->with('error', "Vous n'avez pas les droits !");
+        }
+
+        $user = User::findOrFail($id);
+
+        // Ne pas changer le rôle d'un autre admin
+        if ($user->role?->name === 'admin') {
+            return redirect()->back()->with('error', "Impossible de modifier le rôle d'un administrateur !");
+        }
+
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        return redirect()->back()->with('success', "Le rôle de {$user->first_name} a été modifié avec succès !");
+    }
+
     public function destroy($id)
     {
         // Vérifie si l'user connecté est admin
