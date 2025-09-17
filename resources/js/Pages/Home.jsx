@@ -1,3 +1,4 @@
+import BtnRemonter from "@/Components/btnRemonter/btn";
 import Card from "@/Components/carCard/card";
 import FrontLayout from "@/Layouts/FrontLayout";
 import { router, usePage } from "@inertiajs/react";
@@ -199,14 +200,6 @@ export default function Home({ brands, fuels, cars }) {
                             <Card key={el.id} car={el} deleteCar={deleteCar} />
                         ))}
                     </div>
-                    <button
-                        className="text-white text-m-custom mt-5 self-center bg-blue-700 hover:bg-blue-900 px-5 py-2 rounded-md transition"
-                        onClick={() =>
-                            window.scrollTo({ top: 0, behavior: "smooth" })
-                        }
-                    >
-                        Retourner en haut
-                    </button>
                 </div>
             </section>
         </>
