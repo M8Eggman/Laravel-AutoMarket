@@ -12,7 +12,7 @@ export default function Card({ car, deleteCar }) {
                 <img
                     src={car.image1_path}
                     alt={car.model}
-                    className="w-full h-60 object-cover"
+                    className="w-full aspect-video object-cover"
                 />
                 <span className="bg-gray-200 text-gray-800 text-sm-custom font-medium px-3 py-1 rounded-full absolute top-3 left-3">
                     {car.brand?.name}
