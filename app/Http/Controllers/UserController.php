@@ -21,14 +21,18 @@ class UserController extends Controller
 
         // Vérifie si l'utilisateur connecté est admin
         if (!Gate::allows('is-admin')) {
-            return redirect()->back()->with('error', "Vous n'avez pas les droits !");
+            return redirect()
+                ->back()
+                ->with('error', "Vous n'avez pas les droits !");
         }
 
         $user = User::findOrFail($id);
 
-        // Ne pas changer le rôle d'un autre admin
-        if ($user->role?->name === 'admin') {
-            return redirect()->back()->with('error', "Impossible de modifier le rôle d'un administrateur !");
+        // Ne pas changer son propre rôle
+        if (auth()->id() === $user->id) {
+            return redirect()
+                ->back()
+                ->with('error', "Vous ne pouvez pas modifier votre propre rôle !");
         }
 
         $user->role_id = $request->role_id;
@@ -41,16 +45,18 @@ class UserController extends Controller
     {
         // Vérifie si l'user connecté est admin
         if (!Gate::allows('is-admin')) {
-            return redirect()->route('home')
+            return redirect()
+                ->route('home')
                 ->with('error', "Vous n'avez pas les droits !");
         }
 
         $user = User::findOrFail($id);
 
-        // Bloque la suppression d'un admin
-        if ($user->role->name === 'admin') {
-            return redirect()->back()
-                ->with('error', "Impossible de supprimer un administrateur !");
+        // Bloque la suppression de soi-même
+        if (auth()->id() === $user->id) {
+            return redirect()
+                ->back()
+                ->with('error', "Impossible de supprimer votre propre compte !");
         }
 
         if ($user->avatar && $user->avatar->path) {

@@ -18,38 +18,38 @@ export default function Administration({ auth, users, cars, brands, roles }) {
     );
     const [searchFilter, setSearchFilter] = useState("");
 
-    // Variable local de users et cars pour un effet instantané de suppression
+    // Variable local de users et cars et brands pour un effet instantané de suppression et de modif de quantité de voiture
     const [localCars, setLocalCars] = useState(cars);
     const [localUsers, setLocalUsers] = useState(users);
+    const [localBrands, setLocalBrands] = useState(brands);
 
     const [filteredCars, setFilteredCars] = useState(localCars);
     const [filteredUsers, setFilteredUsers] = useState(localUsers);
-    const [filteredBrands, setFilteredBrands] = useState(brands);
+    const [filteredBrands, setFilteredBrands] = useState(localBrands);
 
     // Filtre les élément selon la sous-page
     useEffect(() => {
         if (sousPage === "utilisateur") {
-            const filtered = users.filter((user) =>
+            const filtered = localUsers.filter((user) =>
                 `${user.first_name} ${user.last_name}`
                     .toLowerCase()
                     .includes(searchFilter.toLowerCase())
             );
-            setLocalUsers(filtered);
+            setFilteredUsers(filtered);
         }
 
         if (sousPage === "voiture") {
-            const filtered = cars.filter((car) => {
-                const filterLower = searchFilter.toLowerCase().trim();
-                return (
+            const filterLower = searchFilter.toLowerCase().trim();
+            const filtered = localCars.filter(
+                (car) =>
                     car.model.toLowerCase().includes(filterLower) ||
                     car.brand?.name.toLowerCase().includes(filterLower) ||
                     car.fuel?.name.toLowerCase().includes(filterLower) ||
                     car.type?.name.toLowerCase().includes(filterLower) ||
                     car.etat.toLowerCase().includes(filterLower) ||
                     car.annee.toString().includes(filterLower)
-                );
-            });
-            setLocalCars(filtered);
+            );
+            setFilteredCars(filtered);
         }
 
         if (sousPage === "marque") {
@@ -58,16 +58,48 @@ export default function Administration({ auth, users, cars, brands, roles }) {
             );
             setFilteredBrands(filtered);
         }
-    }, [searchFilter, sousPage, users, cars, brands]);
+    }, [searchFilter, sousPage, localUsers, localCars, brands]);
 
     // reset search quand on change de sous-page
     useEffect(() => {
         setSearchFilter("");
     }, [sousPage]);
 
-    function handleCarDelete(id) {
-        setLocalCars((c) => c.filter((car) => car.id !== id));
-        router.delete(route("cars.destroy", id), {
+    function handleCarDelete(carId) {
+        // Trouve la voiture supprimée
+        const car = localCars.find((c) => c.id === carId);
+        if (!car) return;
+
+        // Supprime de la liste globale
+        setLocalCars((c) => c.filter((c) => c.id !== carId));
+
+        // Supprission du user correspondant
+        setLocalUsers((users) =>
+            users.map((user) =>
+                user.id === car.user_id
+                    ? {
+                          ...user,
+                          cars: user.cars?.filter((c) => c.id !== carId) || [],
+                      }
+                    : user
+            )
+        );
+
+        // Supprission de la marque correspondante
+        setLocalBrands((brands) =>
+            brands.map((brand) =>
+                brand.id === car.brand_id
+                    ? {
+                          ...brand,
+                          cars: (brand.cars || []).filter(
+                              (c) => c.id !== carId
+                          ),
+                      }
+                    : brand
+            )
+        );
+
+        router.delete(route("cars.destroy", carId), {
             preserveScroll: true,
             preserveState: true,
         });
@@ -133,7 +165,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                 Utilisateurs
                             </p>
                             <p className="text-xl-custom font-bold">
-                                {users.length}
+                                {localUsers.length}
                             </p>
                             <p className="text-sm-custom text-gray-500">
                                 Total des inscrits
@@ -149,7 +181,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                 Véhicules
                             </p>
                             <p className="text-xl-custom font-bold">
-                                {cars.length}
+                                {localCars.length}
                             </p>
                             <p className="text-sm-custom text-gray-500">
                                 Total des annonces
@@ -165,7 +197,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                 Actives
                             </p>
                             <p className="text-xl-custom font-bold">
-                                {cars.length}
+                                {localCars.length}
                             </p>
                             <p className="text-sm-custom text-gray-500">
                                 Annonces en ligne
@@ -238,7 +270,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                         placeholder="Rechercher un utilisateur ..."
                                     />
                                 </div>
-                                {localUsers.map((user) => (
+                                {filteredUsers.map((user) => (
                                     <div
                                         key={user.id}
                                         className="flex flex-col gap-4 sm:flex-row justify-between items-center p-4 bg-white rounded shadow"
@@ -271,10 +303,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                         </div>
 
                                         <div className="flex gap-2">
-                                            {user.id !==
-                                                users.find(
-                                                    (u) => u.role !== "admin"
-                                                ).id && (
+                                            {auth.user.id !== user.id && (
                                                 <>
                                                     <select
                                                         className="border rounded ps-2 py-1"
@@ -338,7 +367,7 @@ export default function Administration({ auth, users, cars, brands, roles }) {
                                         </Link>
                                     </div>
                                 </div>
-                                {localCars.map((car) => (
+                                {filteredCars.map((car) => (
                                     <div
                                         key={car.id}
                                         className="flex justify-between items-center p-4 bg-white rounded shadow"
